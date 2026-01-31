@@ -177,11 +177,22 @@ export const UseCases = () => {
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeIndex}
-                            initial={{ opacity: 0, scale: 0.98 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 1.02 }}
-                            transition={{ duration: 0.5 }}
-                            className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 lg:p-20 overflow-hidden"
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={(e, { offset, velocity }) => {
+                                const swipe = offset.x;
+                                if (swipe < -50) {
+                                    next();
+                                } else if (swipe > 50) {
+                                    prev();
+                                }
+                            }}
+                            initial={{ opacity: 0, scale: 0.98, x: 20 }}
+                            animate={{ opacity: 1, scale: 1, x: 0 }}
+                            exit={{ opacity: 0, scale: 1.02, x: -20 }}
+                            transition={{ duration: 0.5, type: "spring", damping: 25, stiffness: 200 }}
+                            className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 lg:p-20 overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y"
                         >
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
                                 <div className="lg:col-span-5 space-y-8 sm:space-y-12">
