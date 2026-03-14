@@ -1,27 +1,19 @@
-import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/Hero";
-import { Challenge } from "@/components/sections/Challenge";
+import { ProblemSolution } from "@/components/sections/ProblemSolution";
+import { GrowthGenes } from "@/components/sections/GrowthGenes";
 import { UseCases } from "@/components/sections/UseCases";
-import { CreativeAlly } from "@/components/sections/CreativeAlly";
-import { BusinessOps } from "@/components/sections/BusinessOps";
-import { SystemFlow } from "@/components/sections/SystemFlow";
-import { Benefits } from "@/components/sections/Benefits";
+import { Diagnosis } from "@/components/sections/Diagnosis";
 import { FinalCTA } from "@/components/sections/FinalCTA";
-import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+    <main className="flex min-h-screen flex-col bg-[#02040a]">
       <Hero />
-      <Challenge />
+      <ProblemSolution />
+      <GrowthGenes />
       <UseCases />
-      <CreativeAlly />
-      <BusinessOps />
-      <SystemFlow />
-      <Benefits />
+      <Diagnosis />
       <FinalCTA />
-      <Footer />
     </main>
   );
 }

@@ -1,266 +1,163 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Zap, MessageSquare, Paintbrush, Users, BarChart3, Workflow as WorkflowIcon, ArrowRight, CheckCircle2, Bot, Database, Mail, Share2, Search, Smartphone, Globe } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import {
+    MessageSquare,
+    Database,
+    Globe,
+    FileText,
+    Sheet,
+    Bot,
+    Search,
+    Brain
+} from "lucide-react";
+import { NeonEmphasis } from "@/components/ui/NeonEmphasis";
 
-const useCases = [
-    {
-        id: "automation",
-        title: "Automatización de Procesos",
-        tagline: "Sistemas autónomos que ejecutan tareas críticas 24/7.",
-        icon: <Zap className="text-primary" size={24} />,
-        bg: "bg-primary/5",
-        workflow: [
-            { title: "Entrada de Data", desc: "Captura de leads o documentos." },
-            { title: "Lógica IA", desc: "Clasificación y extracción automática." },
-            { title: "Acción Instantánea", desc: "Ejecución en CRM o ERP." }
-        ],
-        examples: [
-            {
-                title: "Calificación automática de leads B2B",
-                tools: [<Mail size={16} />, <Bot size={16} />, <Database size={16} />],
-                user: { name: "Carlos M.", role: "Ops Director", avatar: "CM" },
-                extra: "+12"
-            },
-            {
-                title: "Procesamiento de facturas sin errores",
-                tools: [<Database size={16} />, <WorkflowIcon size={16} />],
-                user: { name: "Laura G.", role: "Finance Lead", avatar: "LG" },
-                extra: "+5"
-            }
-        ],
-        image: "/use_case_automation_intelligent_flows_1769826157518.png"
-    },
-    {
-        id: "support",
-        title: "Atención al Cliente IA",
-        tagline: "Experiencia de soporte inmediata con lenguaje natural.",
-        icon: <MessageSquare className="text-secondary" size={24} />,
-        bg: "bg-secondary/5",
-        workflow: [
-            { title: "Consulta Usuario", desc: "Pregunta en lenguaje natural." },
-            { title: "Búsqueda Semántica", desc: "Consulta a base de conocimiento." },
-            { title: "Resolución", desc: "Respuesta precisa y personalizada." }
-        ],
-        examples: [
-            {
-                title: "Chatbot de soporte técnico 24/7",
-                tools: [<MessageSquare size={16} />, <Search size={16} />, <Bot size={16} />],
-                user: { name: "Elena R.", role: "CS Manager", avatar: "ER" },
-                extra: "+8"
-            }
-        ],
-        image: "/use_case_digital_assistants_support_1769826173870.png"
-    },
-    {
-        id: "creative",
-        title: "Generación de Contenido",
-        tagline: "Escala tu presencia visual y escrita sin fricción.",
-        icon: <Paintbrush className="text-blue-500" size={24} />,
-        bg: "bg-blue-500/5",
-        workflow: [
-            { title: "Briefing", desc: "Definición de tono y objetivos." },
-            { title: "Augmentación", desc: "IA genera variantes de alto nivel." },
-            { title: "Distribución", desc: "Publicación multicanal optimizada." }
-        ],
-        examples: [
-            {
-                title: "Adaptación de campañas globales",
-                tools: [<Paintbrush size={16} />, <Globe size={16} />, <Share2 size={16} />],
-                user: { name: "Julian P.", role: "Creative Dir", avatar: "JP" },
-                extra: "+15"
-            }
-        ],
-        image: "/use_case_ai_creativity_production_1769826187723.png"
-    },
-    {
-        id: "marketing",
-        title: "Marketing Predictivo",
-        tagline: "Anticipa el deseo del cliente con hiper-relevancia.",
-        icon: <Users className="text-orange-500" size={24} />,
-        bg: "bg-orange-500/10",
-        workflow: [
-            { title: "Segmentación", desc: "Análisis de patrones de conducta." },
-            { title: "Personalización", desc: "Creación de oferta individual." },
-            { title: "Conversión", desc: "Impacto en el momento justo." }
-        ],
-        examples: [
-            {
-                title: "Recomendaciones personalizadas e-commerce",
-                tools: [<Users size={16} />, <BarChart3 size={16} />, <Smartphone size={16} />],
-                user: { name: "Sofia V.", role: "Growth Lead", avatar: "SV" },
-                extra: "+20"
-            }
-        ],
-        image: "/use_case_personalized_marketing_segments_1769826200946.png"
-    }
-];
+// Mapping icons for visualization in the "n8n style" card header
+const IconMap = {
+    chat: <MessageSquare size={16} />,
+    db: <Database size={16} />,
+    web: <Globe size={16} />,
+    doc: <FileText size={16} />,
+    sheet: <Sheet size={16} />,
+    bot: <Bot size={16} />,
+    search: <Search size={16} />,
+    brain: <Brain size={16} />
+};
 
-const RecipeCard = ({ item }: { item: any }) => (
-    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-4 sm:p-6 hover:border-primary/30 transition-all duration-300 group cursor-default">
-        <div className="flex gap-2 mb-4">
-            {item.tools.map((icon: any, i: number) => (
-                <div key={i} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-zinc-400">
-                    {icon}
-                </div>
-            ))}
-            {item.extra && (
-                <div className="w-10 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-bold text-zinc-500">
-                    {item.extra}
-                </div>
-            )}
-        </div>
-        <h4 className="text-white text-sm sm:text-base font-medium mb-6 group-hover:text-primary transition-colors leading-tight">{item.title}</h4>
-        <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
-                {item.user.avatar}
+import { useCasesData } from "@/lib/data/useCases";
+
+interface UseCasesProps {
+    title?: React.ReactNode;
+    subtitle?: string;
+    description?: string;
+    items?: typeof useCasesData;
+    ctaText?: string;
+    ctaLink?: string;
+    showBackground?: boolean;
+    variant?: "grid" | "carousel";
+}
+
+export const UseCases = ({
+    title = (
+        <>
+            Donde hay voluntad, <br />
+            hay un <NeonEmphasis>Workflow Inteligente</NeonEmphasis>
+        </>
+    ),
+    subtitle = "Librería de Flujos",
+    description = "Comienza con una base probada. Adaptamos estas plantillas de agentes autónomos a tu caso de uso específico.",
+    items = useCasesData,
+    ctaText = "Explorar todas las plantillas",
+    ctaLink = "/soluciones",
+    showBackground = true,
+    variant = "grid"
+}: UseCasesProps) => {
+
+    const renderCard = (useCase: typeof useCasesData[0], i: number) => (
+        <motion.div
+            key={`${useCase.id}-${i}`}
+            initial={variant === "grid" ? { opacity: 0, y: 20 } : {}}
+            whileInView={variant === "grid" ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: i * 0.1 }}
+            viewport={{ once: true }}
+            className={`group bg-[#15171e] hover:bg-[#1c1f26] border border-white/5 hover:border-white/10 rounded-2xl p-6 transition-all duration-300 cursor-pointer flex flex-col h-full ${variant === "carousel" ? "min-w-[320px] max-w-[320px] md:min-w-[380px] md:max-w-[380px]" : ""}`}
+        >
+            {/* Icons Header */}
+            <div className="flex items-center gap-2 mb-6">
+                {useCase.icons.map((iconKey, j) => (
+                    <div key={j} className="w-8 h-8 rounded-lg bg-[#2b2f38] flex items-center justify-center text-zinc-400 group-hover:text-white transition-colors flex-shrink-0">
+                        {IconMap[iconKey as keyof typeof IconMap]}
+                    </div>
+                ))}
+                {useCase.icons.length < 4 && (
+                    <div className="px-2 py-1 rounded bg-[#2b2f38] text-[10px] text-zinc-500 font-mono">
+                        + connectors
+                    </div>
+                )}
             </div>
-            <div className="min-w-0">
-                <p className="text-xs font-semibold text-zinc-300 flex items-center gap-1 truncate">
-                    {item.user.name} <CheckCircle2 size={10} className="text-blue-500 fill-blue-500 shrink-0" />
+
+            {/* Content */}
+            <div className="mb-8 flex-grow">
+                <h3 className="text-lg font-medium text-white mb-2 group-hover:text-primary transition-colors">
+                    {useCase.title}
+                </h3>
+                <p className="text-sm text-zinc-400 leading-relaxed">
+                    {useCase.desc}
                 </p>
-                <p className="text-[10px] text-zinc-500 truncate">{item.user.role}</p>
             </div>
-        </div>
-    </div>
-);
 
-const WorkflowStep = ({ step, index, total }: { step: any, index: number, total: number }) => (
-    <div className="relative flex flex-col items-center text-center group">
-        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 mb-3 sm:mb-4 group-hover:border-primary/50 group-hover:text-primary transition-all duration-300 shrink-0">
-            {index + 1}
-        </div>
-        <h5 className="text-white text-[11px] sm:text-sm font-semibold mb-1 leading-tight">{step.title}</h5>
-        <p className="hidden sm:block text-zinc-500 text-[10px] sm:text-[11px] leading-tight">{step.desc}</p>
-
-        {index < total - 1 && (
-            <div className="hidden lg:block absolute left-full top-5 w-full -translate-x-1/2 z-0">
-                <div className="w-full h-[1px] bg-gradient-to-r from-primary/30 to-transparent" />
+            {/* Footer Badge */}
+            <div className="flex items-center gap-2 mt-auto">
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-[8px] font-bold text-black shadow-[0_0_10px_var(--primary-glow)]">
+                    GF
+                </div>
+                <span className="text-xs text-zinc-500 font-medium">
+                    {useCase.badge}
+                </span>
+                <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_#ccff00]" />
+                </div>
             </div>
-        )}
-    </div>
-);
-
-export const UseCases = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const next = () => setActiveIndex((prev) => (prev + 1) % useCases.length);
-    const prev = () => setActiveIndex((prev) => (prev - 1 + useCases.length) % useCases.length);
-
-    const current = useCases[activeIndex];
+        </motion.div>
+    );
 
     return (
-        <section className="py-20 sm:py-32 bg-[#050505] overflow-hidden" id="casos-de-uso">
+        <section className={`py-24 md:py-32 ${showBackground ? 'bg-[#02040a]' : 'bg-transparent'} relative overflow-hidden`}>
+            {/* Si es grid usamos container standard, si es carousel el título sí va centrado pero el content se desborda */}
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-20 gap-8">
-                    <div className="max-w-2xl">
-                        <h2 className="text-4xl sm:text-5xl md:text-7xl font-display font-medium mb-4 sm:mb-8 leading-[1.1]">
-                            Flujos que <br className="hidden sm:block" />
-                            <span className="text-gradient-primary italic">Transforman Datos</span>
-                        </h2>
-                        <p className="text-lg sm:text-xl text-zinc-400 font-light">
-                            Soluciones modulares listas para escalar tus procesos estratégicos.
-                        </p>
-                    </div>
-                    <div className="flex gap-4">
-                        <button onClick={prev} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                            <ChevronLeft size={20} className="text-zinc-400" />
-                        </button>
-                        <button onClick={next} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                            <ChevronRight size={20} className="text-zinc-400" />
-                        </button>
-                    </div>
-                </div>
-
-                <div className="relative">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeIndex}
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
-                            dragElastic={0.2}
-                            onDragEnd={(e, { offset, velocity }) => {
-                                const swipe = offset.x;
-                                if (swipe < -50) {
-                                    next();
-                                } else if (swipe > 50) {
-                                    prev();
-                                }
-                            }}
-                            initial={{ opacity: 0, scale: 0.98, x: 20 }}
-                            animate={{ opacity: 1, scale: 1, x: 0 }}
-                            exit={{ opacity: 0, scale: 1.02, x: -20 }}
-                            transition={{ duration: 0.5, type: "spring", damping: 25, stiffness: 200 }}
-                            className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 lg:p-20 overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y"
-                        >
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-                                <div className="lg:col-span-5 space-y-8 sm:space-y-12">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center gap-3 text-primary uppercase text-[10px] font-bold tracking-[0.3em]">
-                                            <div className="w-8 h-[1px] bg-primary" />
-                                            Caso 0{activeIndex + 1}
-                                        </div>
-                                        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-display font-medium text-white leading-tight">{current.title}</h3>
-                                        <p className="text-base sm:text-lg text-zinc-400 font-light leading-relaxed">{current.tagline}</p>
-                                    </div>
-
-                                    {/* Workflow Grid */}
-                                    <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-white/5 sm:border-t-0">
-                                        {current.workflow.map((step, i) => (
-                                            <WorkflowStep key={i} step={step} index={i} total={current.workflow.length} />
-                                        ))}
-                                    </div>
-
-                                    {/* Action Button */}
-                                    <div className="pt-4 sm:pt-8 flex justify-center lg:justify-start">
-                                        <button className="flex items-center gap-3 text-sm font-semibold text-white group bg-white/5 lg:bg-transparent px-6 py-3 lg:p-0 rounded-full lg:rounded-none">
-                                            Explorar este flujo
-                                            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all">
-                                                <ArrowRight size={14} />
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h4 className="text-[10px] uppercase font-bold tracking-widest text-zinc-500">Recetas de Aplicación</h4>
-                                        <div className="flex gap-1">
-                                            {[...Array(3)].map((_, i) => <div key={i} className="w-1 h-1 rounded-full bg-zinc-800" />)}
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                                        {current.examples.map((item, i) => (
-                                            <RecipeCard key={i} item={item} />
-                                        ))}
-                                    </div>
-
-                                    {/* Visual Context */}
-                                    <div className="mt-8 sm:mt-12 opacity-30 sm:opacity-40">
-                                        <img
-                                            src={current.image}
-                                            alt={current.title}
-                                            className="w-full h-24 sm:h-32 object-cover rounded-xl sm:rounded-2xl grayscale"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </AnimatePresence>
-
-                    <div className="flex gap-3 mt-8 sm:mt-12 justify-center lg:justify-start">
-                        {useCases.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setActiveIndex(i)}
-                                className={`h-1 transition-all duration-700 ${activeIndex === i ? "w-8 sm:w-12 bg-primary" : "w-2 sm:w-4 bg-zinc-800"}`}
-                            />
-                        ))}
-                    </div>
+                <div className="text-center mb-16">
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-4"
+                    >
+                        {subtitle}
+                    </motion.p>
+                    <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-6">
+                        {title}
+                    </h2>
+                    <p className="text-zinc-400 font-light max-w-xl mx-auto">
+                        {description}
+                    </p>
                 </div>
             </div>
+
+            {variant === "grid" ? (
+                <div className="container mx-auto px-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                        {items.map((useCase, i) => renderCard(useCase, i))}
+                    </div>
+                </div>
+            ) : (
+                <div className="w-full relative flex items-center mb-8">
+                    {/* Fades para los bordes del carousel */}
+                    <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
+                    
+                    <motion.div
+                        className="flex gap-6 w-max pl-6"
+                        animate={{ x: ["0%", "-50%"] }}
+                        transition={{ repeat: Infinity, ease: "linear", duration: Math.max(items.length * 8, 30) }}
+                    >
+                        <div className="flex gap-6 pr-6">
+                            {items.map((useCase, i) => renderCard(useCase, i))}
+                        </div>
+                        <div className="flex gap-6 pr-6">
+                            {items.map((useCase, i) => renderCard(useCase, i))}
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+
+            {ctaLink && ctaText && (
+                <div className="mt-16 text-center container mx-auto px-6 relative z-20">
+                    <a href={ctaLink} className="inline-block px-8 py-3 rounded-full bg-primary text-[#02040a] font-bold text-sm tracking-wide shadow-[0_0_20px_var(--primary-glow)] hover:scale-105 transition-all">
+                        {ctaText}
+                    </a>
+                </div>
+            )}
         </section>
     );
 };
