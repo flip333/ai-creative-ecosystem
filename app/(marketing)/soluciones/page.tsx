@@ -10,22 +10,22 @@ import { motion } from "framer-motion";
 
 const groups = [
     {
-        title: <>Ventas y <NeonEmphasis>Crecimiento</NeonEmphasis></>,
-        subtitle: "Captación y conversión",
-        description: "Que ningún lead se enfríe esperando. Captación, enriquecimiento y calificación corriendo solos, con el rastro de cada contacto visible en tu portal.",
-        tags: ["ventas", "growth", "conversion"],
-    },
-    {
-        title: <>Contenido y <NeonEmphasis>Creatividad</NeonEmphasis></>,
-        subtitle: "Producción a escala",
-        description: "Producir más sin sonar a robot. Motores generativos entrenados con tu marca, siempre con un humano aprobando antes de publicar.",
-        tags: ["marketing", "creatividad", "estrategia"],
-    },
-    {
-        title: <>Operaciones y <NeonEmphasis>Backoffice</NeonEmphasis></>,
+        title: <>Soluciones <NeonEmphasis>Operativas</NeonEmphasis></>,
         subtitle: "El frente que nadie automatiza",
-        description: "Reportes, conciliaciones, aprobaciones y seguimiento: el trabajo invisible que se come las horas de tu equipo, convertido en flujos que avisan cuando algo falla.",
+        description: "Reportes, conciliaciones, aprobaciones y seguimiento: el trabajo invisible que se come las horas de tu equipo, desarrollado sobre tu proceso real y no sobre una plantilla.",
         tags: ["operaciones", "analitica", "soporte"],
+    },
+    {
+        title: <>Creatividad y <NeonEmphasis>Marketing</NeonEmphasis></>,
+        subtitle: "Producción y captación a escala",
+        description: "Producir más sin sonar a robot y que ningún lead se enfríe esperando. Motores entrenados con la voz de tu marca, siempre con un humano aprobando antes de publicar.",
+        tags: ["marketing", "creatividad", "estrategia", "ventas", "growth", "conversion"],
+    },
+    {
+        title: <>Capacitación y <NeonEmphasis>Cultura IA</NeonEmphasis></>,
+        subtitle: "Para que el equipo lo use de verdad",
+        description: "Formación a tu gente, documentación viva de cada sistema y copilotos internos. Sin adopción, la mejor automatización termina siendo una pestaña que nadie abre.",
+        tags: ["cultura"],
     }
 ];
 

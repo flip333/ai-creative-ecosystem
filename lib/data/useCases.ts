@@ -82,5 +82,30 @@ export const useCasesData = [
         title: "Optimizador de Conversión",
         desc: "Pruebas A/B automáticas de copy y estructura web.",
         badge: "Conversión"
+    },
+    // Capacitación y cultura IA — el pilar de adopción
+    {
+        id: "onboarding_ia",
+        category: "cultura",
+        icons: ["doc", "brain", "chat"],
+        title: "Onboarding IA del Equipo",
+        desc: "Ruta de formación por rol, con ejercicios sobre tus propios flujos.",
+        badge: "Capacitación"
+    },
+    {
+        id: "copiloto_interno",
+        category: "cultura",
+        icons: ["chat", "doc", "search"],
+        title: "Copiloto Interno",
+        desc: "Asistente que responde dudas de procesos internos sin escalar a soporte.",
+        badge: "Adopción"
+    },
+    {
+        id: "biblioteca_prompts",
+        category: "cultura",
+        icons: ["doc", "sheet", "brain"],
+        title: "Biblioteca de Prompts",
+        desc: "Prompts maestros documentados y versionados para todo el equipo.",
+        badge: "Documentación"
     }
 ];

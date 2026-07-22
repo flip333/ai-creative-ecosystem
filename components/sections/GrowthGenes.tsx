@@ -18,7 +18,7 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
                             whileInView={{ opacity: 1, x: 0 }}
                             className="bg-primary/20 border border-primary/40 px-3 py-1 rounded text-[8px] text-primary flex items-center gap-2 shadow-sm font-bold tracking-widest"
                         >
-                            <Activity size={10} /> GENFLOW_CRM ACTIVE
+                            <Activity size={10} /> GENFLOW_OPS ACTIVE
                         </motion.div>
                         <div className="flex gap-2">
                             <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
@@ -53,7 +53,7 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
                             transition={{ duration: 2, repeat: Infinity }}
                             className="absolute left-[35%] w-12 h-20 border-l border-r border-dashed border-primary/20 flex flex-col items-center justify-around py-2"
                         >
-                            <div className="text-[6px] text-zinc-600 uppercase font-black">Enrich</div>
+                            <div className="text-[6px] text-zinc-600 uppercase font-black">Validar</div>
                             <div className="w-1 h-1 bg-primary rounded-full animate-ping" />
                         </motion.div>
 
@@ -84,8 +84,8 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
 
                     <div className="bg-zinc-900/50 rounded-lg p-3 border border-white/5 backdrop-blur-md">
                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-[8px] text-zinc-500 font-bold uppercase">Pipeline Velocity</span>
-                            <span className="text-[8px] text-primary font-bold">+124%</span>
+                            <span className="text-[8px] text-zinc-500 font-bold uppercase">Tiempo de ciclo</span>
+                            <span className="text-[8px] text-primary font-bold">-62%</span>
                         </div>
                         <div className="w-full h-1.5 bg-black rounded-full overflow-hidden">
                             <motion.div
@@ -273,8 +273,8 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
                 <div className="relative h-full p-6 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col gap-1">
-                            <div className="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">Global Sync Hub</div>
-                            <div className="text-[6px] text-cyan-400 font-mono">LATENCY: 12ms</div>
+                            <div className="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">Hub de Adopción</div>
+                            <div className="text-[6px] text-cyan-400 font-mono">EQUIPOS ACTIVOS: 5</div>
                         </div>
                         <div className="flex -space-x-2">
                             {[1, 2, 3, 4].map(i => (
@@ -335,11 +335,11 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
                             <Zap size={10} className="text-cyan-400" />
                             <div className="flex-1">
                                 <span className="font-bold text-cyan-400 uppercase">Genflow_Sync:</span>
-                                Cierre de mes conciliado. 3 diferencias marcadas para revisión.
+                                Ana resolvió su consulta con el copiloto interno. Sin escalar a soporte.
                             </div>
                         </motion.div>
                         <div className="flex justify-between items-center text-[6px] text-zinc-600 font-bold uppercase tracking-widest">
-                            <span>Workspace: Team_Nexus</span>
+                            <span>Adopción: 5 equipos</span>
                             <span className="animate-pulse">Active_Sync</span>
                         </div>
                     </div>
@@ -355,37 +355,37 @@ const genes = [
     {
         id: "origin",
         title: "Origin OS",
-        subtitle: "Gen de Ventas & Marketing",
+        subtitle: "Gen Operativo",
         description:
-            "Leads que entran por cualquier canal, se enriquecen solos y llegan calificados al equipo comercial. Con el historial completo visible en tu portal: qué entró, por dónde y en qué quedó.",
+            "Sistemas construidos sobre tu proceso, no sobre el promedio del mercado. Conciliaciones, reportes, aprobaciones, inventario, seguimiento de pedidos: el trabajo repetitivo que se come las horas de tu equipo, convertido en flujos que corren solos y avisan cuando algo falla.",
         icon: <Database className="text-primary" size={24} />,
         color: "from-primary/20",
         borderColor: "group-hover:border-primary/50",
-        features: ["Hub de datos unificado", "CRM autónomo", "Scoring predictivo"],
+        features: ["Procesos a medida", "Datos unificados", "Alertas ante fallos"],
         mockupType: 'crm'
     },
     {
         id: "vivid",
         title: "Vivid Synthesis",
-        subtitle: "Gen de Contenido & Creatividad",
+        subtitle: "Gen Creativo & Marketing",
         description:
-            "Producción a escala sin perder la voz de tu marca. Los nodos toman tus activos y generan video, copy y variantes listas para publicar — siempre con revisión humana antes de salir.",
+            "Producir y captar a escala sin sonar a plantilla. Contenido, campañas y seguimiento de leads construidos sobre la voz real de tu marca — siempre con revisión humana antes de que algo salga publicado.",
         icon: <Video className="text-purple-400" size={24} />,
         color: "from-purple-500/20",
         borderColor: "group-hover:border-purple-500/50",
-        features: ["Síntesis de video IA", "Consistencia de marca", "Revisión humana"],
+        features: ["Contenido a escala", "Consistencia de marca", "Revisión humana"],
         mockupType: 'node'
     },
     {
         id: "synergy",
         title: "Synergy AI",
-        subtitle: "Gen de Operaciones & Backoffice",
+        subtitle: "Gen de Capacitación & Cultura IA",
         description:
-            "El frente que casi nadie automatiza. Conciliaciones, reportes, aprobaciones, seguimiento de inventario, respuestas internas: el trabajo repetitivo que consume a tu equipo, convertido en flujos que corren solos y avisan cuando algo falla.",
+            "Un sistema que nadie sabe usar es dinero quemado. Formamos a tu equipo, documentamos cada flujo y dejamos copilotos internos, para que la IA deje de ser un proyecto del área de tecnología y pase a ser parte de cómo trabaja la empresa.",
         icon: <Brain className="text-cyan-400" size={24} />,
         color: "from-cyan-500/20",
         borderColor: "group-hover:border-cyan-500/50",
-        features: ["Reportes automáticos", "Aprobaciones y alertas", "Copilotos internos"],
+        features: ["Formación al equipo", "Documentación viva", "Copilotos internos"],
         mockupType: 'chat'
     }
 ];
@@ -461,9 +461,9 @@ export const GrowthGenes = () => {
                         Un solo <NeonEmphasis>ecosistema</NeonEmphasis>
                     </h2>
                     <p className="text-xl text-zinc-400 font-light leading-relaxed max-w-2xl">
-                        No empezamos por la herramienta, empezamos por dónde te duele. El diagnóstico
-                        define cuál de estos frentes atacamos primero — y a veces la respuesta no es
-                        marketing, es la operación que nadie quiere tocar.
+                        Ninguno se entrega igual a dos empresas: cada solución se desarrolla sobre tu
+                        proceso real. El diagnóstico define por cuál empezamos — y con frecuencia la
+                        respuesta no es marketing, sino la operación que nadie quiere tocar.
                     </p>
                 </div>
 
