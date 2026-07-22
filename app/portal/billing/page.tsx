@@ -1,21 +1,14 @@
-'use client';
+import { getBillingRecords, requireProfile } from '@/lib/queries';
+import { formatMonthlyCost } from '@/lib/format';
+import { DownloadInvoiceButton } from '@/components/portal/DownloadInvoiceButton';
 
-import { Download } from 'lucide-react';
+export const dynamic = 'force-dynamic';
 
-const billingItems = [
-  { name: 'GoHighLevel API & Usage', type: 'API / Herramienta', cost: '$15.00 / mes' },
-  { name: 'OpenAI Token Usage (GPT-4o)', type: 'Consumo Token', cost: '$42.30 / mes' },
-  { name: 'HubSpot Integration Token', type: 'API / Herramienta', cost: '$8.00 / mes' },
-  { name: 'Klaviyo Email API', type: 'API / Herramienta', cost: '$22.00 / mes' },
-  { name: 'Slack Bot Webhooks', type: 'API / Herramienta', cost: '$5.50 / mes' },
-  { name: 'Gestión y Soporte Genflow 1:1', type: 'Servicio Genflow', cost: '$120.00 / mes' },
-];
+export default async function PortalBillingPage() {
+  const { userId, profile } = await requireProfile();
+  const records = await getBillingRecords(userId);
 
-export default function PortalBillingPage() {
-  const totalCost = billingItems.reduce(
-    (sum, b) => sum + parseFloat(b.cost.replace(/[^0-9.]/g, '')),
-    0
-  );
+  const totalCost = records.reduce((sum, r) => sum + Number(r.monthly_cost ?? 0), 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -28,13 +21,11 @@ export default function PortalBillingPage() {
           </span>
         </div>
 
-        <button 
-          onClick={() => alert('Descargando factura en PDF...')}
-          className="inline-flex items-center justify-center gap-2 bg-transparent border border-white/10 text-zinc-200 hover:text-white hover:bg-white/5 rounded-2xl py-4 px-6 text-sm font-semibold cursor-pointer transition-colors"
-        >
-          <Download className="w-4 h-4" />
-          Descargar factura (PDF)
-        </button>
+        <DownloadInvoiceButton
+          records={records}
+          total={totalCost}
+          company={profile.company ?? profile.name ?? 'Cliente Genflow'}
+        />
       </section>
 
       {/* Itemized Table */}
@@ -45,16 +36,24 @@ export default function PortalBillingPage() {
           <span>Costo Mensual</span>
         </div>
 
-        {billingItems.map((item, idx) => (
-          <div
-            key={idx}
-            className="grid grid-cols-[2fr_1fr_1fr] items-center px-6 py-4 border-b border-white/5 last:border-b-0"
-          >
-            <span className="text-sm font-medium text-white">{item.name}</span>
-            <span className="text-xs text-zinc-400">{item.type}</span>
-            <span className="font-mono text-xs text-zinc-300">{item.cost}</span>
+        {records.length > 0 ? (
+          records.map((item) => (
+            <div
+              key={item.id}
+              className="grid grid-cols-[2fr_1fr_1fr] items-center px-6 py-4 border-b border-white/5 last:border-b-0"
+            >
+              <span className="text-sm font-medium text-white">{item.service_name}</span>
+              <span className="text-xs text-zinc-400">{item.service_type}</span>
+              <span className="font-mono text-xs text-zinc-300">
+                {formatMonthlyCost(item.monthly_cost)}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="p-12 text-center text-zinc-500 text-sm">
+            Todavía no hay consumos registrados para tu cuenta.
           </div>
-        ))}
+        )}
       </section>
     </div>
   );

@@ -1,11 +1,14 @@
 import { login } from './actions'
 import { NeonEmphasis } from '@/components/ui/NeonEmphasis'
 
-export default function LoginPage({
+// En Next 15 searchParams llega como Promise y hay que esperarlo.
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string }
+  searchParams: Promise<{ error?: string }>
 }) {
+  const params = await searchParams
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black/90 relative overflow-hidden font-sans">
       {/* Background Glows */}
@@ -32,9 +35,9 @@ export default function LoginPage({
         </div>
 
         <form className="space-y-5 bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-xl">
-          {searchParams?.error && (
+          {params?.error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-medium p-4 rounded-xl text-center">
-              {searchParams.error}
+              {params.error}
             </div>
           )}
 

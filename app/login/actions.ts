@@ -7,20 +7,30 @@ import { createClient } from '@/lib/supabase/server'
 export async function login(formData: FormData) {
   const supabase = await createClient()
 
-  // Use email and password or magic link based on the form
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const email = String(formData.get('email') ?? '').trim()
+  const password = String(formData.get('password') ?? '')
 
-  // Simple email/password sign-in for now
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    redirect('/login?error=Invalid email or password')
+    redirect('/login?error=Correo o contraseña incorrectos')
   }
 
-  revalidatePath('/portal/home')
-  redirect('/portal/home')
+  // Los admins entran al CRM; los clientes, a su portal.
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .maybeSingle()
+
+  revalidatePath('/', 'layout')
+  redirect(profile?.role === 'admin' ? '/admin/dashboard' : '/portal/home')
+}
+
+export async function logout() {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+
+  revalidatePath('/', 'layout')
+  redirect('/login')
 }

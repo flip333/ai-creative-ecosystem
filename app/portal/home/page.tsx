@@ -1,30 +1,19 @@
-'use client';
-
 import Link from 'next/link';
-import { 
-  TrendingUp, 
-  Users, 
-  Clock, 
-  AlertTriangle, 
-  Workflow, 
-  BookOpen, 
-  CreditCard, 
-  LifeBuoy 
+import {
+  TrendingUp,
+  Users,
+  Clock,
+  AlertTriangle,
+  Workflow,
+  BookOpen,
+  CreditCard,
+  LifeBuoy,
 } from 'lucide-react';
 
-const kpis = [
-  { icon: TrendingUp, value: '+320%', label: 'ROI Estimado', delta: 'vs. inversión', deltaColor: 'text-[#22c55e]' },
-  { icon: Users, value: '214', label: 'Leads Generados (Mes)', delta: '+18%', deltaColor: 'text-[#22c55e]' },
-  { icon: Clock, value: '86h', label: 'Horas Ahorradas (Mes)', delta: '+14%', deltaColor: 'text-[#22c55e]' },
-];
+import { getAutomations, requireProfile } from '@/lib/queries';
+import { formatRelative } from '@/lib/format';
 
-const alerts = [
-  {
-    title: 'Recuperación de Carritos está en Error',
-    detail: 'Última falla: Hace 30 min (Error de autenticación con Klaviyo)',
-    href: '/portal/flows',
-  },
-];
+export const dynamic = 'force-dynamic';
 
 const quickLinks = [
   { icon: Workflow, label: 'Mis Automatizaciones', href: '/portal/flows' },
@@ -33,7 +22,44 @@ const quickLinks = [
   { icon: LifeBuoy, label: 'Soporte', href: '/portal/support' },
 ];
 
-export default function PortalHomePage() {
+export default async function PortalHomePage() {
+  const { userId, profile } = await requireProfile();
+  const automations = await getAutomations(userId);
+
+  const kpis = [
+    {
+      icon: TrendingUp,
+      value: profile.kpi_roi ?? 'En proceso',
+      label: 'ROI Estimado',
+      delta: 'vs. inversión',
+    },
+    {
+      icon: Users,
+      value: String(profile.kpi_leads ?? 0),
+      label: 'Leads Generados (Mes)',
+      delta: 'este mes',
+    },
+    {
+      icon: Clock,
+      value: `${profile.kpi_hours ?? 0}h`,
+      label: 'Horas Ahorradas (Mes)',
+      delta: 'este mes',
+    },
+  ];
+
+  // Las alertas se derivan del estado real de los flujos, no de una lista fija.
+  const alerts = automations
+    .filter((a) => a.status === 'error')
+    .map((a) => {
+      const lastFailure = a.automation_logs.find((log) => log.status === 'error');
+      return {
+        title: `${a.name} está en Error`,
+        detail: lastFailure
+          ? `Última falla: ${formatRelative(lastFailure.created_at)} (${lastFailure.message})`
+          : `Última actualización: ${formatRelative(a.updated_at)}`,
+      };
+    });
+
   return (
     <div className="flex flex-col gap-7">
       {/* KPI Cards Section */}
@@ -49,10 +75,12 @@ export default function PortalHomePage() {
                 <div className="w-10 h-10 rounded-xl bg-[#ccff00]/10 flex items-center justify-center">
                   <Icon className="w-5 h-5 text-[#ccff00]" />
                 </div>
-                <span className={`font-mono text-xs font-bold ${kpi.deltaColor}`}>{kpi.delta}</span>
+                <span className="font-mono text-xs font-bold text-zinc-500">{kpi.delta}</span>
               </div>
               <div>
-                <div className="font-display text-4xl font-medium text-white tracking-tight">{kpi.value}</div>
+                <div className="font-display text-4xl font-medium text-white tracking-tight">
+                  {kpi.value}
+                </div>
                 <div className="text-xs text-zinc-400 mt-1">{kpi.label}</div>
               </div>
             </div>
@@ -80,7 +108,7 @@ export default function PortalHomePage() {
                   <span className="text-xs text-zinc-400">{alert.detail}</span>
                 </div>
                 <Link
-                  href={alert.href}
+                  href="/portal/flows"
                   className="bg-transparent border border-white/10 text-zinc-200 hover:text-white hover:bg-white/5 rounded-full px-4 py-2 text-xs font-semibold transition-colors"
                 >
                   Ver detalle
@@ -88,7 +116,9 @@ export default function PortalHomePage() {
               </div>
             ))
           ) : (
-            <div className="py-6 text-zinc-500 text-xs">Todo en orden — no hay alertas activas.</div>
+            <div className="py-6 text-zinc-500 text-xs">
+              Todo en orden — no hay alertas activas.
+            </div>
           )}
         </div>
       </section>

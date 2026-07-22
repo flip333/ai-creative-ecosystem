@@ -2,6 +2,7 @@
 
 import { Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { LogoutButton } from '@/components/portal/LogoutButton';
 
 const pageTitles: Record<string, { kicker: string; title: string }> = {
   '/admin/dashboard': { kicker: 'Panel General', title: 'Métricas de la Plataforma' },
@@ -9,7 +10,7 @@ const pageTitles: Record<string, { kicker: string; title: string }> = {
   '/admin/tickets': { kicker: 'Atención al Cliente', title: 'Bandeja de Tickets' },
 };
 
-export function AdminHeader() {
+export function AdminHeader({ name }: { name: string }) {
   const pathname = usePathname();
   const meta = pageTitles[pathname] || { kicker: 'Administración', title: 'Genflow Console' };
 
@@ -28,8 +29,10 @@ export function AdminHeader() {
         {/* Admin Tag */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold">
           <Shield className="w-3.5 h-3.5" />
-          Super Admin
+          {name}
         </div>
+
+        <LogoutButton />
       </div>
     </header>
   );
