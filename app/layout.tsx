@@ -7,9 +7,9 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://genflow.com.co"),
-  title: "Genflow | Automatización e IA con trazabilidad y acompañamiento 1:1",
+  title: "Genflow | Secuenciamos el ADN de tu marca para orquestar automatizaciones e IA",
   description:
-    "Diseñamos y operamos tus automatizaciones de marketing, ventas y operaciones. Con un consultor asignado y un portal donde ves qué corre, qué resultados da y cuánto cuesta cada pieza.",
+    "Nos integramos a tu operación, la diagnosticamos y desarrollamos tus sistemas de automatización e IA. Con un consultor 1:1 y un portal donde ves la trazabilidad completa de tu ecosistema.",
   keywords: [
     "automatización empresarial",
     "consultoría IA",
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     "IA segura y escalable",
   ],
   openGraph: {
-    title: "Genflow | Toda tu IA en un solo lugar. Y trazable.",
+    title: "Genflow | Secuenciamos el ADN de tu marca para orquestar automatizaciones e IA",
     description:
-      "Automatizaciones de marketing a operaciones, con acompañamiento 1:1 y costos visibles. Diagnóstico gratuito de 30 minutos.",
+      "Integración, diagnóstico y desarrollo de sistemas de IA. Con consultor 1:1 y trazabilidad completa en tu portal. Diagnóstico gratuito de 30 minutos.",
     url: "https://genflow.com.co",
     siteName: "Genflow",
     images: [
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Genflow | Toda tu IA en un solo lugar. Y trazable.",
+    title: "Genflow | Secuenciamos el ADN de tu marca para orquestar automatizaciones e IA",
     description:
-      "Automatizaciones de marketing a operaciones, con acompañamiento 1:1 y costos visibles.",
+      "Integración, diagnóstico y desarrollo de sistemas de IA. Con consultor 1:1 y trazabilidad completa en tu portal.",
     images: ["/hero_ai_creative_abstract_1769822779877.png"],
   },
 };

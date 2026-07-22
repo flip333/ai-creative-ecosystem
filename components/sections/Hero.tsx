@@ -24,11 +24,13 @@ export const Hero = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md mb-8"
+                        className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md mb-8 max-w-full"
                     >
                         <Zap size={14} className="text-primary animate-pulse" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/80">
-                            Acompañamiento 1:1 · Sistemas a medida
+                        {/* Los tres verbos del subtítulo, condensados: el badge
+                            adelanta la promesa antes de que se lea el párrafo. */}
+                        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.3em] text-primary/80 whitespace-nowrap">
+                            Integramos · Diagnosticamos · Desarrollamos
                         </span>
                     </motion.div>
 
@@ -37,11 +39,13 @@ export const Hero = () => {
                             initial={{ opacity: 0, y: 100, filter: "blur(10px)" }}
                             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                             transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-                            className="text-5xl md:text-[7.5rem] font-display font-medium leading-[0.9] mb-12 tracking-tighter text-white"
+                            className="text-[2.1rem] sm:text-4xl md:text-[5.5rem] font-display font-medium leading-[1.05] md:leading-[0.95] mb-10 md:mb-12 tracking-tight md:tracking-tighter text-white text-balance"
                         >
-                            Toda tu IA <br />
-                            en un solo lugar. <br />
-                            <NeonEmphasis>Y TRAZABLE</NeonEmphasis>
+                            {/* Los saltos solo se fuerzan en desktop: en móvil el
+                                texto debe reflowear solo o deja huérfanas. */}
+                            Secuenciamos el ADN <br className="hidden md:inline" />
+                            de tu marca para orquestar <br className="hidden md:inline" />
+                            <NeonEmphasis>automatizaciones e IA</NeonEmphasis>
                         </motion.h1>
                     </div>
 
@@ -51,10 +55,11 @@ export const Hero = () => {
                         transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
                         className="text-lg md:text-2xl text-zinc-400 mb-14 max-w-3xl leading-relaxed font-light"
                     >
-                        Diseñamos y operamos tus automatizaciones —{" "}
-                        <span className="text-white font-medium">de marketing a operaciones</span> — con un
-                        consultor asignado y un portal donde ves qué está corriendo, qué resultados da y
-                        cuánto cuesta cada pieza.
+                        Nos integramos a tu operación, la{" "}
+                        <span className="text-white font-medium">diagnosticamos</span> y desarrollamos tus
+                        sistemas de automatización e IA. Con un consultor{" "}
+                        <span className="text-white font-medium">1:1</span> y un portal donde ves la
+                        trazabilidad completa de tu ecosistema.
                     </motion.p>
 
                     <motion.div
