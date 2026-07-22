@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NeonEmphasis } from "@/components/ui/NeonEmphasis";
 import { ArrowRight, CheckCircle, AlertCircle, Building, User, Mail, Briefcase, MessageSquare } from "lucide-react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export default function DiagnosticoPage() {
     const [formData, setFormData] = useState({
@@ -31,9 +31,7 @@ export default function DiagnosticoPage() {
         setErrorMessage("");
 
         try {
-            // Asume que hay una tabla llamada 'diagnostics' en Supabase.
-            // id (uuid, default gen_random_uuid()), created_at (timestamp), 
-            // name, email, company, role, challenge (text)
+            const supabase = createClient();
             const { error } = await supabase
                 .from('diagnostics')
                 .insert([

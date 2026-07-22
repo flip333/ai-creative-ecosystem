@@ -44,6 +44,8 @@
 
   --animate-shimmer: shimmer 2s linear infinite;
   --animate-bloom: bloom 3s ease-in-out infinite;
+  --animate-fade-in: fade-in 200ms ease forwards;
+  --animate-slide-in: slide-in 260ms cubic-bezier(0.23,1,0.32,1) forwards;
 
   @keyframes shimmer {
     0% {
@@ -65,6 +67,16 @@
     50% {
       filter: drop-shadow(0 0 15px var(--primary-glow));
     }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
   }
 }
 

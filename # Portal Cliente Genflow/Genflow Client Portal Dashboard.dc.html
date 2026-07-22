@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  --gf-lime:#ccff00; --gf-lime-glow:rgba(204,255,0,0.40); --gf-lime-soft:rgba(204,255,0,0.10);
+  --gf-lime-border:rgba(204,255,0,0.20); --gf-lime-hairline:rgba(204,255,0,0.10);
+  --gf-bg:#02040a; --gf-surface:#0d1117; --gf-surface-2:#15171e; --gf-surface-3:#1c1f26; --gf-surface-mono:#2b2f38;
+  --gf-fg:#ffffff; --gf-fg-2:#d4d4d8; --gf-fg-3:#a1a1aa; --gf-fg-4:#71717a; --gf-fg-5:#52525b;
+  --gf-border:rgba(255,255,255,0.05); --gf-border-strong:rgba(255,255,255,0.10);
+  --gf-input-bg:rgba(0,0,0,0.40); --gf-input-border:rgba(255,255,255,0.10);
+  --gf-warn:#f59e0b; --gf-alert:#ef4444; --gf-lock:#eab308; --gf-ok:#22c55e;
+  --gf-font-display:"Outfit",ui-sans-serif,system-ui,sans-serif;
+  --gf-font-sans:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --gf-font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --gf-ease-premium:cubic-bezier(0.23,1,0.32,1);
+}
+@keyframes gf-pulse-glow{0%,100%{text-shadow:0 0 10px var(--gf-lime-glow)}50%{text-shadow:0 0 22px var(--gf-lime-glow)}}
+@keyframes gf-fade-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+body{margin:0;background:var(--gf-bg);color:var(--gf-fg);font-family:var(--gf-font-sans);-webkit-font-smoothing:antialiased}
+::selection{background:var(--gf-lime);color:#000}
+input::placeholder{color:var(--gf-fg-4)}
+</style>
+</helmet>
+
+<div style="display:flex;min-height:100vh;background:var(--gf-bg);font-family:var(--gf-font-sans)">
+
+  <aside style="width:260px;flex:none;background:var(--gf-surface);border-right:1px solid var(--gf-border);display:flex;flex-direction:column;padding:28px 20px;position:sticky;top:0;height:100vh">
+    <div style="display:flex;align-items:center;gap:12px;padding:0 6px 28px;border-bottom:1px solid var(--gf-border);margin-bottom:20px">
+      <div style="width:36px;height:36px;border-radius:10px;background:var(--gf-lime);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--gf-lime-glow);color:#000;font-weight:800;font-size:18px;font-family:var(--gf-font-display)">G</div>
+      <span style="font-family:var(--gf-font-display);font-weight:500;font-size:18px;letter-spacing:-0.02em;color:#fff">Gen<span style="color:var(--gf-lime);font-style:italic">flow</span></span>
+    </div>
+
+    <nav style="display:flex;flex-direction:column;gap:4px;flex:1">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+        <a href="javascript:void(0)" onClick="{{ item.onClick }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;text-decoration:none;color:{{ item.color }};background:{{ item.bg }};font-size:14px;font-weight:500;transition:background 200ms">
+          <i data-lucide="{{ item.icon }}" style="width:18px;height:18px;flex:none"></i>
+          {{ item.label }}
+        </a>
+      </sc-for>
+    </nav>
+
+    <div style="padding-top:16px;border-top:1px solid var(--gf-border);display:flex;flex-direction:column;gap:2px">
+      <span style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4)">Plan Actual</span>
+      <span style="font-size:13px;color:var(--gf-fg-2);font-weight:500">Genflow Core</span>
+    </div>
+  </aside>
+
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+
+    <header style="height:80px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid var(--gf-border);background:rgba(2,4,10,0.7);backdrop-filter:blur(12px);position:sticky;top:0;z-index:20">
+      <div>
+        <div style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gf-lime);margin-bottom:4px">{{ pageKicker }}</div>
+        <h1 style="margin:0;font-family:var(--gf-font-display);font-weight:500;font-size:26px;letter-spacing:-0.02em;color:#fff">{{ pageTitle }}</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <button style="width:40px;height:40px;border-radius:12px;background:var(--gf-surface-2);border:1px solid var(--gf-border);display:flex;align-items:center;justify-content:center;color:var(--gf-fg-3);cursor:pointer;position:relative">
+          <i data-lucide="bell" style="width:18px;height:18px"></i>
+          <sc-if value="{{ hasAlerts }}"><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:99px;background:var(--gf-alert);box-shadow:0 0 6px var(--gf-alert)"></span></sc-if>
+        </button>
+        <div style="display:flex;align-items:center;gap:10px;padding:6px 6px 6px 6px;border-radius:99px;background:var(--gf-surface-2);border:1px solid var(--gf-border);cursor:pointer">
+          <div style="width:32px;height:32px;border-radius:99px;background:var(--gf-surface-mono);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gf-lime)">CA</div>
+          <span style="font-size:13px;color:var(--gf-fg-2);padding-right:10px">Camila Arango</span>
+        </div>
+      </div>
+    </header>
+
+    <main style="flex:1;padding:32px;overflow-x:auto">
+      <div style="display:flex;flex-direction:column;gap:28px;min-width:980px;max-width:1400px">
+
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <section style="display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:20px">
+          <sc-for list="{{ homeKpis }}" as="kpi" hint-placeholder-count="3">
+            <div style="background:rgba(13,17,23,0.7);border:1px solid var(--gf-lime-hairline);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="width:40px;height:40px;border-radius:12px;background:var(--gf-lime-soft);display:flex;align-items:center;justify-content:center">
+                  <i data-lucide="{{ kpi.icon }}" style="width:20px;height:20px;color:var(--gf-lime)"></i>
+                </div>
+                <span style="font-family:var(--gf-font-mono);font-size:11px;color:{{ kpi.deltaColor }};font-weight:700">{{ kpi.delta }}</span>
+              </div>
+              <div>
+                <div style="font-family:var(--gf-font-display);font-size:34px;font-weight:500;color:#fff;letter-spacing:-0.02em">{{ kpi.value }}</div>
+                <div style="font-size:13px;color:var(--gf-fg-3);margin-top:4px">{{ kpi.label }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </section>
+
+        <section style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:24px;padding:24px">
+          <div style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4);margin-bottom:16px">Alertas del Sistema</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ alerts }}" as="alert" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--gf-border)">
+                <div style="width:32px;height:32px;border-radius:10px;background:rgba(239,68,68,0.12);display:flex;align-items:center;justify-content:center;flex:none">
+                  <i data-lucide="alert-triangle" style="width:15px;height:15px;color:var(--gf-alert)"></i>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:13.5px;font-weight:600;color:#fff">{{ alert.title }}</span>
+                  <span style="font-size:12px;color:var(--gf-fg-4)">{{ alert.detail }}</span>
+                </div>
+                <button onClick="{{ alert.onView }}" style="background:transparent;border:1px solid var(--gf-border-strong);color:var(--gf-fg-2);border-radius:99px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer">Ver detalle</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noAlerts }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:24px 4px;color:var(--gf-fg-4);font-size:13px">Todo en orden — no hay alertas activas.</div>
+            </sc-if>
+          </div>
+        </section>
+
+        <section style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ quickLinks }}" as="q" hint-placeholder-count="4">
+            <div onClick="{{ q.onClick }}" style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:20px;padding:20px;cursor:pointer;display:flex;flex-direction:column;gap:12px" style-hover="border-color:var(--gf-lime-border)">
+              <i data-lucide="{{ q.icon }}" style="width:20px;height:20px;color:var(--gf-lime)"></i>
+              <span style="font-size:13.5px;font-weight:600;color:#fff">{{ q.label }}</span>
+            </div>
+          </sc-for>
+        </section>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isFlows }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:28px">
+      <section style="display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:20px">
+        <sc-for list="{{ kpis }}" as="kpi" hint-placeholder-count="3">
+          <div style="background:rgba(13,17,23,0.7);border:1px solid var(--gf-lime-hairline);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="width:40px;height:40px;border-radius:12px;background:var(--gf-lime-soft);display:flex;align-items:center;justify-content:center">
+                <i data-lucide="{{ kpi.icon }}" style="width:20px;height:20px;color:var(--gf-lime)"></i>
+              </div>
+              <span style="font-family:var(--gf-font-mono);font-size:11px;color:{{ kpi.deltaColor }};font-weight:700">{{ kpi.delta }}</span>
+            </div>
+            <div>
+              <div style="font-family:var(--gf-font-display);font-size:34px;font-weight:500;color:#fff;letter-spacing:-0.02em">{{ kpi.value }}</div>
+              <div style="font-size:13px;color:var(--gf-fg-3);margin-top:4px">{{ kpi.label }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="position:relative;flex:1;min-width:220px">
+          <i data-lucide="search" style="width:16px;height:16px;color:var(--gf-fg-4);position:absolute;left:14px;top:50%;transform:translateY(-50%)"></i>
+          <input type="text" value="{{ searchTerm }}" onChange="{{ onSearchChange }}" placeholder="Buscar flujo o integración..." style="width:100%;box-sizing:border-box;background:var(--gf-input-bg);border:1px solid var(--gf-input-border);border-radius:12px;padding:11px 14px 11px 40px;color:#fff;font-size:14px;font-family:var(--gf-font-sans);outline:none"/>
+        </div>
+        <select value="{{ statusFilter }}" onChange="{{ onStatusFilterChange }}" style="background:var(--gf-input-bg);border:1px solid var(--gf-input-border);border-radius:12px;padding:11px 14px;color:var(--gf-fg-2);font-size:13px;font-family:var(--gf-font-sans);outline:none">
+          <option value="todos">Todos los estados</option>
+          <option value="activo">Activo</option>
+          <option value="pausa">En Pausa</option>
+          <option value="error">Error</option>
+        </select>
+        <select value="{{ areaFilter }}" onChange="{{ onAreaFilterChange }}" style="background:var(--gf-input-bg);border:1px solid var(--gf-input-border);border-radius:12px;padding:11px 14px;color:var(--gf-fg-2);font-size:13px;font-family:var(--gf-font-sans);outline:none">
+          <option value="todas">Todas las áreas</option>
+          <option value="marketing">Marketing</option>
+          <option value="ventas">Ventas</option>
+          <option value="operaciones">Operaciones</option>
+          <option value="soporte">Soporte</option>
+        </select>
+        <div style="flex:1"></div>
+        <button style="display:inline-flex;align-items:center;gap:8px;background:var(--gf-lime);color:#000;border:none;padding:12px 22px;border-radius:99px;font-weight:700;font-size:13px;box-shadow:0 0 18px var(--gf-lime-glow);cursor:pointer">
+          <i data-lucide="plus" style="width:15px;height:15px"></i>
+          Solicitar nueva automatización
+        </button>
+      </section>
+
+      <section style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:24px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr 0.8fr 1fr 1.3fr;padding:16px 24px;border-bottom:1px solid var(--gf-border);font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4)">
+          <span>Función</span><span>Status</span><span>Actualizado</span><span>Docs</span><span>Costo</span><span>Resultados</span>
+        </div>
+
+        <sc-for list="{{ filteredRows }}" as="row" hint-placeholder-count="4">
+          <div onClick="{{ row.onOpen }}" style="display:grid;grid-template-columns:2.4fr 1fr 1fr 0.8fr 1fr 1.3fr;align-items:center;padding:18px 24px;border-bottom:1px solid var(--gf-border);cursor:pointer;transition:background 200ms" style-hover="background:var(--gf-surface-3)">
+            <div style="display:flex;flex-direction:column;gap:3px;padding-right:12px">
+              <span style="font-size:14px;font-weight:600;color:#fff">{{ row.name }}</span>
+              <span style="font-size:12px;color:var(--gf-fg-4)">{{ row.stack }}</span>
+            </div>
+            <div>
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:11.5px;font-weight:600;background:{{ row.statusBg }};color:{{ row.statusColor }}">
+                <span style="width:6px;height:6px;border-radius:99px;background:{{ row.statusColor }}"></span>
+                {{ row.statusLabel }}
+              </span>
+            </div>
+            <span style="font-size:13px;color:var(--gf-fg-3)">{{ row.updated }}</span>
+            <div>
+              <button onClick="{{ row.onDocClick }}" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:transparent;border:1px solid var(--gf-border-strong);color:var(--gf-fg-3);cursor:pointer">
+                <i data-lucide="external-link" style="width:15px;height:15px"></i>
+              </button>
+            </div>
+            <span style="font-family:var(--gf-font-mono);font-size:13px;color:var(--gf-fg-2)">{{ row.cost }}</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <svg width="60" height="24" viewBox="0 0 60 24" style="flex:none">
+                <polyline points="{{ row.sparkPoints }}" fill="none" stroke="{{ row.sparkColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+              </svg>
+              <span style="font-size:12.5px;font-weight:600;color:{{ row.resultColor }}">{{ row.result }}</span>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:48px 24px;text-align:center;color:var(--gf-fg-4);font-size:14px">No se encontraron automatizaciones con esos filtros.</div>
+        </sc-if>
+      </section>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
+      <section style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px">
+        <sc-for list="{{ docCards }}" as="d" hint-placeholder-count="4">
+          <div style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div>
+                <div style="font-size:14.5px;font-weight:600;color:#fff">{{ d.name }}</div>
+                <div style="font-size:12px;color:var(--gf-fg-4);margin-top:2px">{{ d.stack }}</div>
+              </div>
+              <button onClick="{{ d.onOpen }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--gf-border-strong);color:var(--gf-fg-2);border-radius:99px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;flex:none">
+                <i data-lucide="external-link" style="width:13px;height:13px"></i> Ver manual
+              </button>
+            </div>
+            <div style="background:var(--gf-bg);border:1px solid var(--gf-border);border-radius:12px;padding:12px 14px">
+              <div style="font-family:var(--gf-font-mono);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gf-fg-4);margin-bottom:6px">Prompt Maestro</div>
+              <code style="font-family:var(--gf-font-mono);font-size:12px;color:var(--gf-lime);line-height:1.5;display:block;white-space:pre-wrap">{{ d.prompt }}</code>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isBilling }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <section style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+          <div style="background:rgba(13,17,23,0.7);border:1px solid var(--gf-lime-hairline);border-radius:24px;padding:26px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+            <span style="font-size:13px;color:var(--gf-fg-3)">Total facturado este mes</span>
+            <span style="font-family:var(--gf-font-display);font-size:40px;font-weight:500;color:#fff">{{ billingTotal }}</span>
+          </div>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid var(--gf-border-strong);color:var(--gf-fg-2);border-radius:16px;font-size:13.5px;font-weight:600;cursor:pointer">
+            <i data-lucide="download" style="width:15px;height:15px"></i> Descargar factura
+          </button>
+        </section>
+        <section style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:24px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:16px 24px;border-bottom:1px solid var(--gf-border);font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4)">
+            <span>Servicio</span><span>Tipo</span><span>Costo Mensual</span>
+          </div>
+          <sc-for list="{{ billingItems }}" as="b" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;align-items:center;padding:16px 24px;border-bottom:1px solid var(--gf-border)">
+              <span style="font-size:13.5px;color:#fff;font-weight:500">{{ b.name }}</span>
+              <span style="font-size:12.5px;color:var(--gf-fg-3)">{{ b.type }}</span>
+              <span style="font-family:var(--gf-font-mono);font-size:13px;color:var(--gf-fg-2)">{{ b.cost }}</span>
+            </div>
+          </sc-for>
+        </section>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isSupport }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;justify-content:flex-end">
+          <button style="display:inline-flex;align-items:center;gap:8px;background:var(--gf-lime);color:#000;border:none;padding:12px 22px;border-radius:99px;font-weight:700;font-size:13px;box-shadow:0 0 18px var(--gf-lime-glow);cursor:pointer">
+            <i data-lucide="plus" style="width:15px;height:15px"></i> Nuevo Ticket
+          </button>
+        </div>
+        <section style="background:var(--gf-surface);border:1px solid var(--gf-border);border-radius:24px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:16px 24px;border-bottom:1px solid var(--gf-border);font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4)">
+            <span>Asunto</span><span>Estado</span><span>Prioridad</span><span>Fecha</span>
+          </div>
+          <sc-for list="{{ tickets }}" as="t" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;align-items:center;padding:16px 24px;border-bottom:1px solid var(--gf-border)">
+              <span style="font-size:13.5px;color:#fff;font-weight:500">{{ t.subject }}</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:11.5px;font-weight:600;background:{{ t.statusBg }};color:{{ t.statusColor }};width:fit-content">{{ t.statusLabel }}</span>
+              <span style="font-size:12.5px;color:var(--gf-fg-3)">{{ t.priority }}</span>
+              <span style="font-size:12.5px;color:var(--gf-fg-3)">{{ t.date }}</span>
+            </div>
+          </sc-for>
+        </section>
+      </div>
+      </sc-if>
+
+      </div>
+    </main>
+  </div>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);z-index:40;animation:gf-fade-in 200ms var(--gf-ease-premium)"></div>
+
+    <aside style="position:fixed;top:0;right:0;bottom:0;width:480px;max-width:92vw;background:var(--gf-surface);border-left:1px solid var(--gf-lime-hairline);box-shadow:0 0 50px rgba(0,0,0,0.5);z-index:41;display:flex;flex-direction:column;animation:gf-fade-in 260ms var(--gf-ease-premium)">
+
+      <div style="padding:26px 28px;border-bottom:1px solid var(--gf-border);display:flex;align-items:flex-start;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4)">Detalle de Flujo</span>
+          <h2 style="margin:0;font-family:var(--gf-font-display);font-weight:500;font-size:22px;color:#fff;letter-spacing:-0.02em">{{ selected.name }}</h2>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;font-size:11px;font-weight:600;background:{{ selected.statusBg }};color:{{ selected.statusColor }};width:fit-content">
+            <span style="width:6px;height:6px;border-radius:99px;background:{{ selected.statusColor }}"></span>
+            {{ selected.statusLabel }}
+          </span>
+        </div>
+        <button onClick="{{ closeDrawer }}" style="width:34px;height:34px;border-radius:10px;background:var(--gf-surface-2);border:1px solid var(--gf-border);color:var(--gf-fg-3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">
+          <i data-lucide="x" style="width:16px;height:16px"></i>
+        </button>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:26px 28px;display:flex;flex-direction:column;gap:28px">
+
+        <div>
+          <div style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4);margin-bottom:14px">Secuencia de Nodos</div>
+          <div style="display:flex;align-items:center;gap:0;background:var(--gf-bg);border:1px solid var(--gf-border);border-radius:16px;padding:20px;overflow-x:auto">
+            <sc-for list="{{ selected.nodes }}" as="node" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;flex:none">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px">
+                  <div style="width:44px;height:44px;border-radius:12px;background:var(--gf-surface-2);border:1px solid var(--gf-lime-hairline);display:flex;align-items:center;justify-content:center">
+                    <i data-lucide="{{ node.icon }}" style="width:19px;height:19px;color:var(--gf-lime)"></i>
+                  </div>
+                  <span style="font-size:10.5px;color:var(--gf-fg-3);text-align:center;line-height:1.3">{{ node.label }}</span>
+                </div>
+                <sc-if value="{{ node.hasNext }}" hint-placeholder-val="{{ true }}">
+                  <div style="width:24px;height:1px;background:var(--gf-border-strong);flex:none"></div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family:var(--gf-font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gf-fg-4);margin-bottom:14px">Últimas Ejecuciones</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ selected.logs }}" as="log" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--gf-border)">
+                <div style="width:26px;height:26px;border-radius:99px;background:{{ log.iconBg }};display:flex;align-items:center;justify-content:center;flex:none">
+                  <i data-lucide="{{ log.icon }}" style="width:13px;height:13px;color:{{ log.iconColor }}"></i>
+                </div>
+                <span style="flex:1;font-size:13px;color:var(--gf-fg-2)">{{ log.label }}</span>
+                <span style="font-family:var(--gf-font-mono);font-size:11.5px;color:var(--gf-fg-4)">{{ log.time }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="padding:22px 28px;border-top:1px solid var(--gf-border);display:flex;gap:12px">
+        <button onClick="{{ togglePause }}" style="flex:1;padding:13px;border-radius:99px;background:transparent;border:1px solid var(--gf-border-strong);color:var(--gf-fg-2);font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i data-lucide="{{ selected.pauseIcon }}" style="width:15px;height:15px"></i>
+          {{ selected.pauseLabel }}
+        </button>
+        <button style="flex:1;padding:13px;border-radius:99px;background:var(--gf-lime);color:#000;border:none;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 0 18px var(--gf-lime-glow);display:flex;align-items:center;justify-content:center;gap:8px">
+          <i data-lucide="message-square" style="width:15px;height:15px"></i>
+          Contactar Soporte
+        </button>
+      </div>
+
+    </aside>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ROWS = [
+  { id: 1, name: "Secuencia Onboarding Clientes", stack: "N8N + GoHighLevel", area: "ventas", status: "activo", updated: "Hace 2 horas", cost: "$15.00 / mes", result: "+45 Leads", spark: "0,18 10,14 20,15 30,9 40,10 50,4 60,3",
+    doc: "https://docs.genflow.ai/onboarding-clientes",
+    nodes: [
+      {icon:"user-plus", label:"Trigger: Nuevo Lead"},
+      {icon:"database", label:"CRM Sync"},
+      {icon:"bot", label:"Enriquecimiento IA"},
+      {icon:"mail", label:"Secuencia Email"},
+    ],
+    logs: [
+      {ok:true, label:"Ejecución completada — 12 contactos procesados", time:"Hoy 09:42"},
+      {ok:true, label:"Ejecución completada — 8 contactos procesados", time:"Hoy 06:10"},
+      {ok:true, label:"Ejecución completada — 15 contactos procesados", time:"Ayer 22:03"},
+      {ok:false, label:"Error de timeout en API de GoHighLevel", time:"Ayer 14:27"},
+      {ok:true, label:"Ejecución completada — 10 contactos procesados", time:"Ayer 09:15"},
+    ]},
+  { id: 2, name: "Generador de Contenido IA", stack: "Vivid Synthesis + OpenAI", area: "marketing", status: "activo", updated: "Hace 1 día", cost: "$42.30 / mes", result: "128 piezas", spark: "0,10 10,12 20,8 30,11 40,6 50,7 60,3",
+    doc: "https://docs.genflow.ai/vivid-synthesis",
+    nodes: [
+      {icon:"calendar", label:"Trigger: Calendario"},
+      {icon:"brain", label:"Generación GPT-4"},
+      {icon:"image", label:"Render Visual"},
+      {icon:"check-circle", label:"Revisión Humana"},
+    ],
+    logs: [
+      {ok:true, label:"12 piezas generadas para Instagram", time:"Hoy 07:00"},
+      {ok:true, label:"6 piezas generadas para LinkedIn", time:"Ayer 07:00"},
+      {ok:true, label:"9 piezas generadas para Instagram", time:"27/Jul 07:00"},
+      {ok:true, label:"4 piezas generadas para Blog", time:"26/Jul 07:00"},
+      {ok:false, label:"Fallo de cuota en API de OpenAI", time:"25/Jul 07:00"},
+    ]},
+  { id: 3, name: "Calificación de Leads (Scoring)", stack: "N8N + HubSpot", area: "ventas", status: "pausa", updated: "14/May/2026", cost: "$8.00 / mes", result: "12h ahorradas", spark: "0,6 10,7 20,9 30,9 40,9 50,9 60,9",
+    doc: "https://docs.genflow.ai/lead-scoring",
+    nodes: [
+      {icon:"database", label:"Trigger: HubSpot"},
+      {icon:"layers", label:"Reglas de Scoring"},
+      {icon:"tag", label:"Etiquetado Auto."},
+    ],
+    logs: [
+      {ok:true, label:"Última ejecución antes de pausa — 34 leads", time:"14/May 11:20"},
+      {ok:true, label:"31 leads calificados", time:"13/May 11:20"},
+      {ok:true, label:"28 leads calificados", time:"12/May 11:20"},
+      {ok:true, label:"40 leads calificados", time:"11/May 11:20"},
+      {ok:true, label:"22 leads calificados", time:"10/May 11:20"},
+    ]},
+  { id: 4, name: "Recuperación de Carritos", stack: "Shopify + Klaviyo", area: "marketing", status: "error", updated: "Hace 30 min", cost: "$22.00 / mes", result: "-3 fallos", spark: "0,4 10,6 20,5 30,10 40,14 50,18 60,20",
+    doc: "https://docs.genflow.ai/cart-recovery",
+    nodes: [
+      {icon:"shopping-cart", label:"Trigger: Carrito"},
+      {icon:"clock", label:"Espera 1h"},
+      {icon:"mail", label:"Envío Klaviyo"},
+      {icon:"alert-triangle", label:"Webhook (Error)"},
+    ],
+    logs: [
+      {ok:false, label:"Error de autenticación con Klaviyo", time:"Hoy 08:12"},
+      {ok:false, label:"Error de autenticación con Klaviyo", time:"Hoy 06:40"},
+      {ok:false, label:"Error de autenticación con Klaviyo", time:"Hoy 04:05"},
+      {ok:true, label:"Ejecución completada — 22 carritos", time:"Ayer 22:00"},
+      {ok:true, label:"Ejecución completada — 19 carritos", time:"Ayer 16:00"},
+    ]},
+  { id: 5, name: "Reporte Semanal Ejecutivo", stack: "Synergy AI + Slack", area: "operaciones", status: "activo", updated: "Hace 3 horas", cost: "$5.50 / mes", result: "6h ahorradas", spark: "0,12 10,10 20,11 30,7 40,8 50,5 60,4",
+    doc: "https://docs.genflow.ai/reporte-ejecutivo",
+    nodes: [
+      {icon:"calendar", label:"Trigger: Lunes 8am"},
+      {icon:"bar-chart-2", label:"Consolidación Datos"},
+      {icon:"slack", label:"Envío a Slack"},
+    ],
+    logs: [
+      {ok:true, label:"Reporte enviado al canal #dirección", time:"Lun 08:00"},
+      {ok:true, label:"Reporte enviado al canal #dirección", time:"27/Jul 08:00"},
+      {ok:true, label:"Reporte enviado al canal #dirección", time:"20/Jul 08:00"},
+      {ok:true, label:"Reporte enviado al canal #dirección", time:"13/Jul 08:00"},
+      {ok:true, label:"Reporte enviado al canal #dirección", time:"06/Jul 08:00"},
+    ]},
+  { id: 6, name: "Respuesta Soporte Nivel 1", stack: "Synergy AI + Zendesk", area: "soporte", status: "activo", updated: "Hace 5 horas", cost: "$18.90 / mes", result: "89 tickets", spark: "0,8 10,9 20,7 30,9 40,6 50,7 60,5",
+    doc: "https://docs.genflow.ai/soporte-nivel-1",
+    nodes: [
+      {icon:"message-square", label:"Trigger: Ticket"},
+      {icon:"bot", label:"Clasificación IA"},
+      {icon:"file-text", label:"Respuesta Sugerida"},
+      {icon:"send", label:"Envío / Escalado"},
+    ],
+    logs: [
+      {ok:true, label:"18 tickets resueltos automáticamente", time:"Hoy 10:30"},
+      {ok:true, label:"22 tickets resueltos automáticamente", time:"Hoy 06:00"},
+      {ok:true, label:"15 tickets resueltos automáticamente", time:"Ayer 22:00"},
+      {ok:true, label:"20 tickets resueltos automáticamente", time:"Ayer 14:00"},
+      {ok:true, label:"14 tickets resueltos automáticamente", time:"Ayer 08:00"},
+    ]},
+];
+
+const STATUS_META = {
+  activo: { label: "Activo", color: "var(--gf-ok)", bg: "rgba(34,197,94,0.12)" },
+  pausa:  { label: "En Pausa", color: "var(--gf-lock)", bg: "rgba(234,179,8,0.12)" },
+  error:  { label: "Error", color: "var(--gf-alert)", bg: "rgba(239,68,68,0.12)" },
+};
+
+const TICKETS = [
+  { id: 1, subject: "Ajustar horario de la Secuencia Onboarding", status: "progreso", priority: "Media", date: "17/Jul/2026" },
+  { id: 2, subject: "Error recurrente en Recuperación de Carritos", status: "abierto", priority: "Alta", date: "19/Jul/2026" },
+  { id: 3, subject: "Agregar nueva plantilla a Vivid Synthesis", status: "abierto", priority: "Baja", date: "15/Jul/2026" },
+  { id: 4, subject: "Duda sobre facturación de OpenAI", status: "resuelto", priority: "Media", date: "10/Jul/2026" },
+];
+
+const TICKET_META = {
+  abierto:  { label: "Abierto", color: "var(--gf-alert)", bg: "rgba(239,68,68,0.12)" },
+  progreso: { label: "En Progreso", color: "var(--gf-lock)", bg: "rgba(234,179,8,0.12)" },
+  resuelto: { label: "Resuelto", color: "var(--gf-ok)", bg: "rgba(34,197,94,0.12)" },
+};
+
+class Component extends DCLogic {
+  state = {
+    route: "home",
+    searchTerm: "",
+    statusFilter: "todos",
+    areaFilter: "todas",
+    drawerOpen: false,
+    selectedId: null,
+    rows: ROWS,
+  };
+
+  goTo = (route) => this.setState({ route });
+
+  componentDidMount() { this.refreshIcons(); }
+  componentDidUpdate() { this.refreshIcons(); }
+  refreshIcons() { if (window.lucide) window.lucide.createIcons(); }
+
+  openDrawer(id) { this.setState({ drawerOpen: true, selectedId: id }); }
+  closeDrawer = () => this.setState({ drawerOpen: false });
+
+  togglePause = () => {
+    this.setState(s => ({
+      rows: s.rows.map(r => r.id === s.selectedId
+        ? { ...r, status: r.status === "pausa" ? "activo" : "pausa" }
+        : r)
+    }));
+  };
+
+  buildRow(r) {
+    const meta = STATUS_META[r.status];
+    return {
+      ...r,
+      statusLabel: meta.label, statusColor: meta.color, statusBg: meta.bg,
+      sparkPoints: r.spark,
+      sparkColor: r.status === "error" ? "var(--gf-alert)" : "var(--gf-lime)",
+      resultColor: r.status === "error" ? "var(--gf-alert)" : "var(--gf-ok)",
+      onOpen: () => this.openDrawer(r.id),
+      onDocClick: (e) => { e.stopPropagation(); window.open(r.doc, "_blank"); },
+    };
+  }
+
+  buildSelected(r) {
+    const meta = STATUS_META[r.status];
+    return {
+      ...r,
+      statusLabel: meta.label, statusColor: meta.color, statusBg: meta.bg,
+      pauseLabel: r.status === "pausa" ? "Reanudar Automatización" : "Pausar Automatización",
+      pauseIcon: r.status === "pausa" ? "play" : "pause",
+      nodes: r.nodes.map((n, i) => ({ ...n, hasNext: i < r.nodes.length - 1 })),
+      logs: r.logs.map(l => ({
+        ...l,
+        icon: l.ok ? "check" : "x",
+        iconColor: l.ok ? "var(--gf-ok)" : "var(--gf-alert)",
+        iconBg: l.ok ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
+      })),
+    };
+  }
+
+  renderVals() {
+    const { route, searchTerm, statusFilter, areaFilter, rows, drawerOpen, selectedId } = this.state;
+    const term = searchTerm.trim().toLowerCase();
+
+    const filtered = rows.filter(r => {
+      if (term && !(r.name.toLowerCase().includes(term) || r.stack.toLowerCase().includes(term))) return false;
+      if (statusFilter !== "todos" && r.status !== statusFilter) return false;
+      if (areaFilter !== "todas" && r.area !== areaFilter) return false;
+      return true;
+    });
+
+    const selectedRow = rows.find(r => r.id === selectedId) || rows[0];
+
+    const activeCount = rows.filter(r => r.status === "activo").length;
+    const totalCost = rows.reduce((sum, r) => sum + parseFloat(r.cost.replace(/[^0-9.]/g, "")), 0);
+
+    const navList = [
+      { id: "home", icon: "home", label: "Inicio / Resumen" },
+      { id: "flows", icon: "workflow", label: "Mis Automatizaciones" },
+      { id: "docs", icon: "book-open", label: "Centro de Documentación" },
+      { id: "billing", icon: "credit-card", label: "Facturación y Costos" },
+      { id: "support", icon: "life-buoy", label: "Soporte / Tickets" },
+    ].map(item => ({
+      ...item,
+      color: item.id === route ? "var(--gf-bg)" : "var(--gf-fg-3)",
+      bg: item.id === route ? "var(--gf-lime)" : "transparent",
+      onClick: () => this.goTo(item.id),
+    }));
+
+    const errorRows = rows.filter(r => r.status === "error");
+    const pageMeta = {
+      home:    { kicker: "Vista Ejecutiva", title: "Hola, Camila" },
+      flows:   { kicker: "Hub de Automatizaciones", title: "Mis Automatizaciones" },
+      docs:    { kicker: "Documentación y Prompts", title: "Centro de Documentación" },
+      billing: { kicker: "Costos e Infraestructura", title: "Facturación y Costos" },
+      support: { kicker: "Soporte al Cliente", title: "Soporte y Tickets" },
+    }[route];
+
+    return {
+      navItems: navList,
+      hasAlerts: rows.some(r => r.status === "error"),
+      pageKicker: pageMeta.kicker,
+      pageTitle: pageMeta.title,
+      isHome: route === "home",
+      isFlows: route === "flows",
+      isDocs: route === "docs",
+      isBilling: route === "billing",
+      isSupport: route === "support",
+      homeKpis: [
+        { icon: "trending-up", value: "+320%", label: "ROI Estimado", delta: "vs. inversión", deltaColor: "var(--gf-ok)" },
+        { icon: "users", value: "214", label: "Leads Generados (Mes)", delta: "+18%", deltaColor: "var(--gf-ok)" },
+        { icon: "clock", value: "86h", label: "Horas Ahorradas (Mes)", delta: "+14%", deltaColor: "var(--gf-ok)" },
+      ],
+      alerts: errorRows.map(r => ({
+        title: r.name + " está en Error",
+        detail: "Última falla: " + r.updated,
+        onView: () => { this.setState({ route: "flows" }); this.openDrawer(r.id); },
+      })),
+      noAlerts: errorRows.length === 0,
+      quickLinks: [
+        { icon: "workflow", label: "Mis Automatizaciones", onClick: () => this.goTo("flows") },
+        { icon: "book-open", label: "Documentación", onClick: () => this.goTo("docs") },
+        { icon: "credit-card", label: "Facturación", onClick: () => this.goTo("billing") },
+        { icon: "life-buoy", label: "Soporte", onClick: () => this.goTo("support") },
+      ],
+      kpis: [
+        { icon: "workflow", value: String(activeCount), label: "Automatizaciones Activas", delta: "+2 este mes", deltaColor: "var(--gf-ok)" },
+        { icon: "clock", value: "86h", label: "Horas Ahorradas (Mes)", delta: "+14%", deltaColor: "var(--gf-ok)" },
+        { icon: "database", value: "$" + totalCost.toFixed(2), label: "Gasto en Infraestructura (APIs)", delta: "/ mes", deltaColor: "var(--gf-fg-4)" },
+      ],
+      searchTerm, onSearchChange: (e) => this.setState({ searchTerm: e.target.value }),
+      statusFilter, onStatusFilterChange: (e) => this.setState({ statusFilter: e.target.value }),
+      areaFilter, onAreaFilterChange: (e) => this.setState({ areaFilter: e.target.value }),
+      filteredRows: filtered.map(r => this.buildRow(r)),
+      noResults: filtered.length === 0,
+      docCards: rows.map(r => ({
+        name: r.name, stack: r.stack,
+        prompt: "Eres un asistente experto en " + r.area + ". Ejecuta el flujo \"" + r.name + "\" siguiendo el stack " + r.stack + ".",
+        onOpen: () => window.open(r.doc, "_blank"),
+      })),
+      billingTotal: "$" + (totalCost + 120).toFixed(2) + " / mes",
+      billingItems: [
+        ...rows.map(r => ({ name: r.stack.split(" + ")[1] || r.stack, type: "API / Herramienta", cost: r.cost })),
+        { name: "Gestión y Soporte Genflow", type: "Servicio Genflow", cost: "$120.00 / mes" },
+      ],
+      tickets: TICKETS.map(t => {
+        const m = TICKET_META[t.status];
+        return { ...t, statusLabel: m.label, statusColor: m.color, statusBg: m.bg };
+      }),
+      drawerOpen,
+      selected: this.buildSelected(selectedRow),
+      closeDrawer: this.closeDrawer,
+      togglePause: this.togglePause,
+    };
+  }
+}
+</script>
+</body>
+</html>

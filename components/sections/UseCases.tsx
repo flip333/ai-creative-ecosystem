@@ -135,7 +135,7 @@ export const UseCases = ({
                     {/* Fades para los bordes del carousel */}
                     <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none" />
                     <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none" />
-                    
+
                     <motion.div
                         className="flex gap-6 w-max pl-6"
                         animate={{ x: ["0%", "-50%"] }}
