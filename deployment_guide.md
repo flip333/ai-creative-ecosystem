@@ -39,10 +39,44 @@ Si tienes un dominio propio (ej. `miegosistema-ia.com`):
 - **Speed Insights**: Revisa la pestaña de **Speed Insights** para asegurar que el LCP (Largest Contentful Paint) sea óptimo.
 - **Preview Deployments**: Cada vez que hagas un `git push` a una rama distinta de `main`, Vercel creará una URL de previsualización para que pruebes los cambios antes de publicarlos.
 
-## 5. Seguridad
+## 5. Variables de entorno (obligatorio para el portal)
+
+El portal (`/portal`) y el CRM (`/admin`) no funcionan sin estas tres variables.
+En Vercel: **Settings** > **Environment Variables**, marcando las tres casillas
+(Production, Preview, Development):
+
+| Variable | Origen en Supabase |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Settings > API > Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Settings > API > `anon` `public` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Settings > API > `service_role` |
+
+`SUPABASE_SERVICE_ROLE_KEY` salta Row Level Security por completo. Sólo se lee
+desde el servidor (`lib/supabase/admin.ts`), únicamente para invitar clientes
+vía la Admin API de Auth. **Nunca** le pongas el prefijo `NEXT_PUBLIC_`: eso la
+enviaría al navegador y expondría la base de datos entera.
+
+Desde la CLI:
+
+```bash
+vercel link
+printf '%s' "<valor>" | vercel env add NEXT_PUBLIC_SUPABASE_URL production
+```
+
+Tras cambiar variables hay que **redesplegar** — Vercel las inyecta en build.
+
+### Proyecto de Supabase pausado
+
+En el plan free, un proyecto sin actividad se pausa. Si lleva **más de 90 días**
+pausado ya no se puede restaurar y hay que crear uno nuevo, ejecutar
+`lib/schema.sql` y actualizar las variables de entorno.
+
+## 6. Seguridad
 - La landing ya incluye metadatos básicos y estructura semántica.
 - Vercel proporciona **HTTPS automático** con certificados SSL gratis.
-## 6. Solución de Problemas (Troubleshooting)
+- Las rutas privadas están protegidas en tres capas: middleware, verificación de
+  rol en los Server Components y Row Level Security en Postgres.
+## 7. Solución de Problemas (Troubleshooting)
 
 ### Error: "No se encontró ningún directorio 'pages' ni 'app'"
 Este error ocurre cuando Vercel no encuentra la carpeta de tu proyecto en la raíz del repositorio. 
