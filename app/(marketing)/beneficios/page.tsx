@@ -12,23 +12,23 @@ import { Diagnosis } from "@/components/sections/Diagnosis";
 const businessBenefits = [
     {
         icon: <TrendingUp className="text-primary" size={28} />,
-        title: "Retorno Inmediato en Eficiencia",
-        description: "Automatiza tareas que hoy drenan tiempo y energía. Reduce cuellos de botella para que tu valioso equipo humano se concentre en estrategia, no en tareas repetitivas."
+        title: "Ves el retorno, no lo asumes",
+        description: "Horas ahorradas, leads generados y ROI estimado quedan calculados sobre tu operación real y visibles en tu portal. Si un mes no rinde, lo sabes antes de la reunión y lo corregimos."
     },
     {
         icon: <ShieldCheck className="text-primary" size={28} />,
-        title: "Soberanía y Arquitectura Privada",
-        description: "Tu conocimiento corporativo se queda contigo. Construimos sistemas herméticos que resguardan tu ADN sin fugas de información hacia modelos LLMs públicos."
+        title: "Tus datos no alimentan a nadie más",
+        description: "Accesos segmentados, credenciales aisladas y nada de información sensible viajando a modelos públicos por defecto. La arquitectura se documenta y esa documentación es tuya."
     },
     {
         icon: <Rocket className="text-primary" size={28} />,
-        title: "Escalabilidad Sin Sobrecostos",
-        description: "Crecer el talento humano es costoso; escalar un ecosistema de agentes IA requiere cambiar simples parámetros computacionales. Crece tu capacidad productiva exponencialmente."
+        title: "Creces sin que la nómina crezca igual",
+        description: "Diez veces más volumen no debería costar diez veces más. Los sistemas se diseñan para escalar cambiando parámetros, no contratando gente ni rehaciendo el flujo desde cero."
     },
     {
         icon: <BookOpen className="text-primary" size={28} />,
-        title: "Comunidad y Recursos Internos",
-        description: "Al formar parte de nuestro ecosistema, accederás a nuestra librería de herramientas exclusivas y newsletters periódicos en tendencias de Marketing estratégico e Inteligencia Artificial corporativa."
+        title: "Un consultor, no una mesa de ayuda",
+        description: "Abres una solicitud y te responde quien construyó tu sistema. Con revisiones periódicas contra objetivos acordados, para hablar de resultados y no de actividades."
     }
 ];
 
@@ -54,8 +54,8 @@ export default function BeneficiosPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-7xl font-display font-medium text-white mb-6 leading-tight"
                     >
-                        Beneficios para ti, <br />
-                        <NeonEmphasis>Impacto para el ecosistema</NeonEmphasis>
+                        Lo que ganas tú, <br />
+                        <NeonEmphasis>y lo que gana el ecosistema</NeonEmphasis>
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -63,9 +63,9 @@ export default function BeneficiosPage() {
                         transition={{ delay: 0.1 }}
                         className="text-xl text-zinc-400 font-light leading-relaxed max-w-3xl mx-auto"
                     >
-                        No solo adquieres infraestructura autónoma que acelera la facturación de tu empresa. 
-                        Inviertes en un modelo solidario que empodera e impulsa el desarrollo tecnológico de 
-                        otras mentes brillantes.
+                        Cuatro beneficios que puedes verificar desde tu portal, no solo leer aquí. Y una
+                        parte de lo que pagas financia herramientas de IA para emprendimientos semilla
+                        colombianos que hoy no podrían costearlas.
                     </motion.p>
                 </div>
             </div>

@@ -8,40 +8,40 @@ import Link from "next/link";
 
 const frictions = [
     {
-        id: "fragmentation",
-        title: "Fragmentación",
-        subtitle: "Caos Operativo",
+        id: "opacidad",
+        title: "Opacidad",
+        subtitle: "Operas a ciegas",
         icon: <Activity className="text-orange-500" size={32} />,
         symptoms: [
-            "Datos aislados en silos (Marketing vs Ventas)",
-            "Múltiples suscripciones SaaS redundantes",
-            "Pérdida de contexto en handoffs manuales"
+            "Nadie te sabe decir qué flujos están activos hoy",
+            "Los resultados llegan en un reporte mensual, si llegan",
+            "Te enteras de que algo falló por el cliente, no por el sistema"
         ],
-        diagnosis: "Tu ADN digital está roto. Necesitas unificar flujos."
+        diagnosis: "Tu operación no es medible. Necesitas trazabilidad."
     },
     {
-        id: "saturation",
-        title: "Saturación",
-        subtitle: "Techo de Escala",
+        id: "sobrecosto",
+        title: "Sobrecosto",
+        subtitle: "Pagas más de lo que usas",
         icon: <AlertTriangle className="text-red-500" size={32} />,
         symptoms: [
-            "El equipo crece linealmente, el coste también",
-            "Calidad inconsistente al escalar contenido",
-            "Burnout creativo por tareas repetitivas"
+            "Suscripciones que nadie recuerda haber contratado",
+            "La factura de IA sube y no hay quien explique por qué",
+            "Cada nuevo volumen exige contratar otra persona"
         ],
-        diagnosis: "Tu proceso es manual. Necesitas automatización inteligente."
+        diagnosis: "Estás pagando de más. Necesitas auditar y rediseñar."
     },
     {
-        id: "dependence",
+        id: "dependencia",
         title: "Dependencia",
-        subtitle: "Riesgo de Soberanía",
+        subtitle: "El sistema no es tuyo",
         icon: <Lock className="text-yellow-500" size={32} />,
         symptoms: [
-            "Tu 'know-how' vive en plataformas de terceros",
-            "Sin control sobre los modelos de IA usados",
-            "Fuga de datos sensibles a LLMs públicos"
+            "El know-how vive en la cabeza de un proveedor",
+            "No hay documentación de cómo está construido",
+            "Datos sensibles viajando a modelos públicos"
         ],
-        diagnosis: "No eres dueño de tu inteligencia. Necesitas sistemas propietarios."
+        diagnosis: "No eres dueño de tu inteligencia. Necesitas sistemas propios y documentados."
     }
 ];
 
@@ -55,13 +55,14 @@ export const Diagnosis = () => {
                         whileInView={{ opacity: 1 }}
                         className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-4"
                     >
-                        Diagnóstico de Sistemas
+                        Empieza por aquí
                     </motion.p>
                     <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-6">
-                        Identifica tu <NeonEmphasis>Fricción</NeonEmphasis> Actual
+                        ¿En cuál te <NeonEmphasis>reconoces</NeonEmphasis>?
                     </h2>
                     <p className="text-xl text-zinc-400 font-light max-w-2xl mx-auto">
-                        Antes de prescribir una solución, entendemos dónde duele. ¿Cuál de estos escenarios describe tu realidad?
+                        No recetamos antes de examinar. Estos son los tres cuadros que más vemos —
+                        identificar el tuyo es el primer paso del diagnóstico.
                     </p>
                 </div>
 
@@ -103,11 +104,11 @@ export const Diagnosis = () => {
                 <div className="text-center">
                     <Link href="/diagnostico" className="inline-block btn-premium group text-lg px-12 py-4 shadow-[0_0_30px_rgba(204,255,0,0.2)] hover:shadow-[0_0_40px_rgba(204,255,0,0.4)]">
                         <span className="flex items-center gap-3">
-                            Solicitar Diagnóstico Gratuito <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                            Quiero mi diagnóstico gratuito <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                         </span>
                     </Link>
                     <p className="mt-4 text-xs text-zinc-600 uppercase tracking-widest">
-                        Sesión de 30 min • Sin Compromiso • Análisis de Madurez Digital
+                        30 min 1:1 • Sin compromiso • Sales con un plan escrito
                     </p>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { login } from './actions'
 import { NeonEmphasis } from '@/components/ui/NeonEmphasis'
 
@@ -27,10 +28,10 @@ export default async function LoginPage({
           </div>
           
           <h1 className="text-3xl font-display font-medium text-white tracking-tight mb-2">
-            Portal de <NeonEmphasis>Clientes</NeonEmphasis>
+            Tu <NeonEmphasis>ecosistema</NeonEmphasis>, en vivo
           </h1>
           <p className="text-zinc-400 text-sm">
-            Ingresa con tus credenciales para acceder a tu ecosistema de IA.
+            Flujos, resultados, costos y soporte. Todo en un solo lugar.
           </p>
         </div>
 
@@ -79,8 +80,15 @@ export default async function LoginPage({
           </div>
         </form>
 
-        <p className="text-center text-zinc-500 text-xs mt-8">
-          El acceso al portal es por invitación. <br /> Si eres cliente y no tienes acceso, contacta a tu consultor Genflow.
+        <p className="text-center text-zinc-500 text-xs mt-8 leading-relaxed">
+          El acceso es solo por invitación. Si eres cliente y aún no tienes credenciales,
+          escríbele a tu consultor Genflow.
+        </p>
+
+        <p className="text-center text-xs mt-6">
+          <Link href="/diagnostico" className="text-zinc-600 hover:text-lime-400 transition-colors">
+            ¿Todavía no eres cliente? Agenda tu diagnóstico gratuito →
+          </Link>
         </p>
       </div>
     </div>

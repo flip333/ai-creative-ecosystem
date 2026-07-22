@@ -162,6 +162,25 @@ CREATE INDEX IF NOT EXISTS support_tickets_client_id_idx ON public.support_ticke
 
 
 -- ============================================================
+-- 6. DIAGNOSTICS (leads de la landing)
+-- Alimentada por el formulario público de /diagnostico.
+-- Es la única tabla en la que escribe un visitante anónimo.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS public.diagnostics (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name       TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  company    TEXT,
+  role       TEXT,
+  challenge  TEXT,
+  status     TEXT NOT NULL DEFAULT 'nuevo' CHECK (status IN ('nuevo', 'contactado', 'agendado', 'descartado')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS diagnostics_created_at_idx ON public.diagnostics (created_at DESC);
+
+
+-- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================
 -- IMPORTANTE: is_admin() es SECURITY DEFINER a propósito.
@@ -192,6 +211,7 @@ ALTER TABLE public.automations     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.automation_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.billing_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.support_tickets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.diagnostics     ENABLE ROW LEVEL SECURITY;
 
 -- Limpiar políticas previas para que el script sea re-ejecutable
 DROP POLICY IF EXISTS "Users can view own profile"        ON public.profiles;
@@ -221,6 +241,9 @@ DROP POLICY IF EXISTS "Admins can manage all tickets"     ON public.support_tick
 DROP POLICY IF EXISTS "tickets_select_own"                ON public.support_tickets;
 DROP POLICY IF EXISTS "tickets_insert_own"                ON public.support_tickets;
 DROP POLICY IF EXISTS "tickets_admin_all"                 ON public.support_tickets;
+
+DROP POLICY IF EXISTS "diagnostics_insert_public"          ON public.diagnostics;
+DROP POLICY IF EXISTS "diagnostics_admin_all"              ON public.diagnostics;
 
 
 -- PROFILES ---------------------------------------------------
@@ -269,6 +292,16 @@ CREATE POLICY "tickets_insert_own" ON public.support_tickets
   FOR INSERT TO authenticated WITH CHECK (client_id = auth.uid());
 
 CREATE POLICY "tickets_admin_all" ON public.support_tickets
+  FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+-- DIAGNOSTICS ------------------------------------------------
+-- Cualquier visitante puede enviar el formulario de /diagnostico,
+-- pero NADIE anónimo puede leer la tabla: sin política SELECT para
+-- `anon`, los leads de la competencia no quedan expuestos.
+CREATE POLICY "diagnostics_insert_public" ON public.diagnostics
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+CREATE POLICY "diagnostics_admin_all" ON public.diagnostics
   FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
 
 

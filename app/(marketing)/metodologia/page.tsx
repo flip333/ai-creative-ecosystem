@@ -9,27 +9,27 @@ import { Diagnosis } from "@/components/sections/Diagnosis";
 const steps = [
     {
         icon: <Search className="text-primary" size={32} />,
-        title: "Diagnóstico y Contexto",
-        subtitle: "Auditoría 1:1 Inicial",
-        description: "El flujo inicia con un diagnóstico gratuito. Agendamos una llamada 1:1 para entender tu operación y mapear la fricción. De esta sesión, generamos un brief inicial riguroso que dota de contexto profundo al ecosistema.",
+        title: "Diagnóstico",
+        subtitle: "30 minutos, 1:1, gratis",
+        description: "Nos sentamos con quien opera el día a día, no solo con la gerencia. Mapeamos qué herramientas pagas, qué se hace a mano y dónde se cae el proceso. Sales de esa sesión con un diagnóstico escrito, contrates o no.",
     },
     {
         icon: <BrainCircuit className="text-primary" size={32} />,
-        title: "Inteligencia Aplicada",
-        subtitle: "Inmersión IA",
-        description: "Alimentamos nuestro sistema de IA con tu contexto corporativo y tu ADN de marca. Esto nos permite ejecutar análisis algorítmicos complejos para encontrar insights reales y consideraciones de mejora que el ojo humano podría pasar por alto.",
+        title: "Auditoría de costos",
+        subtitle: "Antes de sumar, restamos",
+        description: "Revisamos tu gasto actual en herramientas e IA: suscripciones duplicadas, planes que nadie usa, llamadas mal diseñadas que queman tokens. Muchas veces el primer ahorro paga buena parte del proyecto.",
     },
     {
         icon: <Layers className="text-primary" size={32} />,
-        title: "Arquitectura Específica",
-        subtitle: "No es consumo masivo",
-        description: "No te entregamos un SaaS genérico. Filtramos nuestra librería de flujos para encontrar los casos de uso precisos y los adaptamos de manera artesanal a las necesidades únicas de tus ideas de negocio.",
+        title: "Arquitectura a medida",
+        subtitle: "Segura y preparada para crecer",
+        description: "Diseñamos el sistema para tu caso, no adaptamos una plantilla. Accesos segmentados, credenciales aisladas, datos sensibles fuera de modelos públicos y una estructura que aguanta diez veces tu volumen actual.",
     },
     {
         icon: <Target className="text-primary" size={32} />,
-        title: "Puesta en Marcha",
-        subtitle: "Consultoría Dirigida",
-        description: "Implementamos tu nuevo nodo tecnológico como un apoyo colaborativo. Desplegamos la infraestructura, te entrenamos en su uso e incentivamos la investigación y crecimiento de tus procesos de la mano de consultoría dedicada.",
+        title: "Operación y acompañamiento",
+        subtitle: "Con tu portal desde el día uno",
+        description: "Desplegamos, entrenamos a tu equipo y te damos acceso al portal donde ves cada flujo, su estado, sus resultados y su costo. De ahí en adelante: revisiones periódicas contra objetivos acordados, con tu consultor asignado.",
     }
 ];
 
@@ -43,15 +43,15 @@ export default function MetodologiaPage() {
                         animate={{ opacity: 1 }}
                         className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-4"
                     >
-                        Nuestra Filosofía Operativa
+                        Cómo trabajamos
                     </motion.p>
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-7xl font-display font-medium text-white mb-6 leading-tight"
                     >
-                        Más que software, un <br />
-                        <NeonEmphasis>Nodo de Crecimiento</NeonEmphasis>
+                        Cuatro pasos, <br />
+                        <NeonEmphasis>sin sorpresas</NeonEmphasis>
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -59,7 +59,11 @@ export default function MetodologiaPage() {
                         transition={{ delay: 0.1 }}
                         className="text-xl text-zinc-400 font-light leading-relaxed"
                     >
-                        No construimos soluciones de IA de consumo masivo. En Genflow <strong>hackeamos la cultura operativa</strong> de tu empresa mediante sistemas sistémicos. Diseñamos flujos de automatización que se alinean al ADN de tu marca, trabajando estrechamente <span className="text-white font-medium italic">1:1 contigo</span> para adaptar <em>flujos (Flow)</em> de <em>generación (Gen)</em> tecnológica al corazón de tu proyecto.
+                        No vendemos licencias ni entregamos un SaaS genérico. Diseñamos, construimos y
+                        operamos el sistema contigo, <span className="text-white font-medium">1:1</span>,
+                        desde el diagnóstico hasta las revisiones mensuales. Cada paso deja algo
+                        tangible en tus manos: un documento, un ahorro, un flujo corriendo o una
+                        métrica que antes no existía.
                     </motion.p>
                 </div>
 

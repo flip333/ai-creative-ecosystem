@@ -42,14 +42,14 @@ interface UseCasesProps {
 export const UseCases = ({
     title = (
         <>
-            Donde hay voluntad, <br />
-            hay un <NeonEmphasis>Workflow Inteligente</NeonEmphasis>
+            Ya construimos esto. <br />
+            Lo <NeonEmphasis>adaptamos</NeonEmphasis> a tu caso
         </>
     ),
-    subtitle = "Librería de Flujos",
-    description = "Comienza con una base probada. Adaptamos estas plantillas de agentes autónomos a tu caso de uso específico.",
+    subtitle = "Punto de partida",
+    description = "No arrancamos de cero ni te entregamos una plantilla tal cual. Estos flujos ya operan en otras empresas: los usamos como base y los rediseñamos según tu diagnóstico.",
     items = useCasesData,
-    ctaText = "Explorar todas las plantillas",
+    ctaText = "Ver todos los flujos",
     ctaLink = "/soluciones",
     showBackground = true,
     variant = "grid"

@@ -335,7 +335,7 @@ const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
                             <Zap size={10} className="text-cyan-400" />
                             <div className="flex-1">
                                 <span className="font-bold text-cyan-400 uppercase">Genflow_Sync:</span>
-                                Estrategia de Q3 aprobada por consenso de IA.
+                                Cierre de mes conciliado. 3 diferencias marcadas para revisión.
                             </div>
                         </motion.div>
                         <div className="flex justify-between items-center text-[6px] text-zinc-600 font-bold uppercase tracking-widest">
@@ -356,33 +356,36 @@ const genes = [
         id: "origin",
         title: "Origin OS",
         subtitle: "Gen de Ventas & Marketing",
-        description: "Arquitectura de Crecimiento. CRM Autónomo que centraliza captación y conversión en un solo sistema vivo gestionado por Genflow.",
+        description:
+            "Leads que entran por cualquier canal, se enriquecen solos y llegan calificados al equipo comercial. Con el historial completo visible en tu portal: qué entró, por dónde y en qué quedó.",
         icon: <Database className="text-primary" size={24} />,
         color: "from-primary/20",
         borderColor: "group-hover:border-primary/50",
-        features: ["Hub de Datos Unificado", "CRM Autonómo", "Lead Scoring Predictivo"],
+        features: ["Hub de datos unificado", "CRM autónomo", "Scoring predictivo"],
         mockupType: 'crm'
     },
     {
         id: "vivid",
         title: "Vivid Synthesis",
-        subtitle: "Gen de Contenido & Video",
-        description: "DNA de Contenido Automatizado. Un flujo de nodos inteligentes que transforma activos visuales en piezas de video de alto impacto con la esencia de tu marca.",
+        subtitle: "Gen de Contenido & Creatividad",
+        description:
+            "Producción a escala sin perder la voz de tu marca. Los nodos toman tus activos y generan video, copy y variantes listas para publicar — siempre con revisión humana antes de salir.",
         icon: <Video className="text-purple-400" size={24} />,
         color: "from-purple-500/20",
         borderColor: "group-hover:border-purple-500/50",
-        features: ["Video Synthesis AI", "Real-time Avatars", "Brand Consistency Engine"],
+        features: ["Síntesis de video IA", "Consistencia de marca", "Revisión humana"],
         mockupType: 'node'
     },
     {
         id: "synergy",
         title: "Synergy AI",
-        subtitle: "Gen de Cultura & Eficiencia",
-        description: "Evolución de Equipo. Co-pilotos inteligentes integrados en Genflow para potenciar la toma de decisiones y el flujo de trabajo colectivo.",
+        subtitle: "Gen de Operaciones & Backoffice",
+        description:
+            "El frente que casi nadie automatiza. Conciliaciones, reportes, aprobaciones, seguimiento de inventario, respuestas internas: el trabajo repetitivo que consume a tu equipo, convertido en flujos que corren solos y avisan cuando algo falla.",
         icon: <Brain className="text-cyan-400" size={24} />,
         color: "from-cyan-500/20",
         borderColor: "group-hover:border-cyan-500/50",
-        features: ["Workspace Integration", "Decision Intelligence", "Autonomous Tasking"],
+        features: ["Reportes automáticos", "Aprobaciones y alertas", "Copilotos internos"],
         mockupType: 'chat'
     }
 ];
@@ -451,12 +454,17 @@ export const GrowthGenes = () => {
                         whileInView={{ opacity: 1 }}
                         className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-6"
                     >
-                        Estructura Genética
+                        Dónde intervenimos
                     </motion.p>
-                    <h2 className="text-5xl md:text-7xl font-display font-medium text-white leading-tight">
-                        Los 3 Genes del <br />
-                        <NeonEmphasis>Crecimiento</NeonEmphasis>
+                    <h2 className="text-5xl md:text-7xl font-display font-medium text-white leading-tight mb-8">
+                        Tres frentes. <br />
+                        Un solo <NeonEmphasis>ecosistema</NeonEmphasis>
                     </h2>
+                    <p className="text-xl text-zinc-400 font-light leading-relaxed max-w-2xl">
+                        No empezamos por la herramienta, empezamos por dónde te duele. El diagnóstico
+                        define cuál de estos frentes atacamos primero — y a veces la respuesta no es
+                        marketing, es la operación que nadie quiere tocar.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-12">

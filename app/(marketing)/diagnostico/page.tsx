@@ -74,19 +74,20 @@ export default function DiagnosticoPage() {
                                 Sesión de 30 minutos
                             </p>
                             <h1 className="text-4xl md:text-5xl font-display font-medium text-white mb-6 leading-tight">
-                                Hackea la <br />
-                                <NeonEmphasis>Fricción</NeonEmphasis> <br />
-                                de tu Negocio
+                                Media hora <br />
+                                que te deja <br />
+                                <NeonEmphasis>un plan</NeonEmphasis>
                             </h1>
                             <p className="text-zinc-400 font-light text-lg mb-8 leading-relaxed max-w-sm">
-                                Este no es un pitching de ventas. Es una inmersión arquitectónica 1:1 para encontrar nodos de ineficiencia y trazar un mapa de automatización real.
+                                No es una llamada de ventas. Revisamos tu operación contigo y sales con un
+                                diagnóstico escrito — lo uses con nosotros o por tu cuenta.
                             </p>
 
                             <div className="space-y-6">
                                 {[
-                                    { title: "Entendimiento Profundo", desc: "Mapeamos tus procesos actuales y detectamos fugas de tiempo y dinero." },
-                                    { title: "Casos de Uso a Medida", desc: "Seleccionamos las automatizaciones exactas para tu modelo de negocio." },
-                                    { title: "Roadmap de Implementación", desc: "Trazamos la ruta más rápida hacia el impacto y el ROI tecnológico." }
+                                    { title: "Miramos tu operación real", desc: "Qué herramientas pagas, qué se hace a mano y dónde se cae el proceso hoy." },
+                                    { title: "Te decimos dónde estás gastando de más", desc: "Suscripciones duplicadas, planes sobredimensionados, tareas que no justifican su costo." },
+                                    { title: "Priorizamos por impacto, no por moda", desc: "Qué automatizar primero, qué puede esperar y qué directamente no vale la pena." }
                                 ].map((step, i) => (
                                     <div key={i} className="flex gap-4">
                                         <div className="shrink-0 mt-1">
@@ -121,15 +122,17 @@ export default function DiagnosticoPage() {
                                         <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                                             <CheckCircle className="text-primary" size={40} />
                                         </div>
-                                        <h3 className="text-2xl font-display text-white mb-4">Diagnóstico Agendado con Éxito</h3>
+                                        <h3 className="text-2xl font-display text-white mb-4">Listo, lo tenemos</h3>
                                         <p className="text-zinc-400 font-light mb-8 max-w-md mx-auto">
-                                            Hemos recibido tu información. Nuestro equipo revisará el contexto inicial y te contactará en las próximas 24 horas para definir la fecha de nuestra sesión estratégica.
+                                            Revisamos tu contexto y te escribimos en menos de 24 horas para
+                                            cuadrar la sesión. Si tu caso no encaja con lo que hacemos, también
+                                            te lo decimos — y te sugerimos por dónde ir.
                                         </p>
-                                        <button 
+                                        <button
                                             onClick={() => setStatus("idle")}
                                             className="px-8 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm transition-all"
                                         >
-                                            Generar otra solicitud
+                                            Enviar otra solicitud
                                         </button>
                                     </motion.div>
                                 ) : (
@@ -142,8 +145,8 @@ export default function DiagnosticoPage() {
                                         className="space-y-6"
                                     >
                                         <div className="mb-8">
-                                            <h3 className="text-2xl font-display text-white mb-2">Solicitar Auditoría Gratuita</h3>
-                                            <p className="text-sm text-zinc-400">Compártenos tus datos base. Nuestro equipo evaluará tu perfil para preparar la primera sesión de brief 1:1.</p>
+                                            <h3 className="text-2xl font-display text-white mb-2">Agenda tu diagnóstico</h3>
+                                            <p className="text-sm text-zinc-400">Cinco campos. Con esto preparamos la sesión antes de hablar contigo, para no gastar los 30 minutos en preguntas básicas.</p>
                                         </div>
 
                                         {status === "error" && (
@@ -169,7 +172,7 @@ export default function DiagnosticoPage() {
                                                         value={formData.name}
                                                         onChange={handleChange}
                                                         className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-primary/50 focus:bg-black transition-all text-sm"
-                                                        placeholder="Elon Musk"
+                                                        placeholder="Camila Arango"
                                                     />
                                                 </div>
                                             </div>
@@ -189,7 +192,7 @@ export default function DiagnosticoPage() {
                                                         value={formData.email}
                                                         onChange={handleChange}
                                                         className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-primary/50 focus:bg-black transition-all text-sm"
-                                                        placeholder="elon@empresa.com"
+                                                        placeholder="nombre@tuempresa.co"
                                                     />
                                                 </div>
                                             </div>
@@ -209,7 +212,7 @@ export default function DiagnosticoPage() {
                                                         value={formData.company}
                                                         onChange={handleChange}
                                                         className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-primary/50 focus:bg-black transition-all text-sm"
-                                                        placeholder="Genflow Corp"
+                                                        placeholder="Tu empresa SAS"
                                                     />
                                                 </div>
                                             </div>
@@ -229,7 +232,7 @@ export default function DiagnosticoPage() {
                                                         value={formData.role}
                                                         onChange={handleChange}
                                                         className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-primary/50 focus:bg-black transition-all text-sm"
-                                                        placeholder="Ej: Fundador, Creador, Líder..."
+                                                        placeholder="Ej: Fundadora, Directora de Operaciones..."
                                                     />
                                                 </div>
                                             </div>
@@ -237,7 +240,7 @@ export default function DiagnosticoPage() {
 
                                         {/* Fricción / Challenge */}
                                         <div className="space-y-2 mt-6">
-                                            <label htmlFor="challenge" className="text-xs font-bold uppercase tracking-widest text-zinc-500 block">Contexto de Ecosistema (Opcional)</label>
+                                            <label htmlFor="challenge" className="text-xs font-bold uppercase tracking-widest text-zinc-500 block">¿Qué te está costando tiempo o dinero? (Opcional)</label>
                                             <div className="relative">
                                                 <div className="absolute top-3 left-0 pl-4 pointer-events-none">
                                                     <MessageSquare className="text-zinc-500" size={16} />
@@ -249,7 +252,7 @@ export default function DiagnosticoPage() {
                                                     value={formData.challenge}
                                                     onChange={handleChange}
                                                     className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-primary/50 focus:bg-black transition-all text-sm resize-none"
-                                                    placeholder="Cuéntanos brevemente de qué trata tu empresa o idea. Identificaremos la fricción y cómo la IA te ayudará durante nuestro brief inicial."
+                                                    placeholder="Ej: mi equipo pasa dos días al mes armando el reporte de ventas a mano. O: pagamos cuatro herramientas y no sé cuál está sirviendo."
                                                 />
                                             </div>
                                         </div>
@@ -261,15 +264,16 @@ export default function DiagnosticoPage() {
                                         >
                                             <span className="flex items-center justify-center gap-2">
                                                 {status === "submitting" ? (
-                                                    "Enviando Contexto..."
+                                                    "Enviando..."
                                                 ) : (
-                                                    <>Agendar Diagnóstico <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></>
+                                                    <>Agendar mi diagnóstico <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></>
                                                 )}
                                             </span>
                                         </button>
-                                        
+
                                         <p className="text-center text-[10px] text-zinc-600 mt-4 leading-relaxed">
-                                            Al agendar, aceptas que nuestro sistema procese tu correo bajo los <br /> principios de privacidad expuestos en nuestro footer constitutivo.
+                                            Sin compromiso y sin costo. Usamos tus datos solo para contactarte,
+                                            bajo los principios de privacidad del pie de página.
                                         </p>
                                     </motion.form>
                                 )}

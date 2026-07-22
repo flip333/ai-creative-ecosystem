@@ -10,21 +10,21 @@ import { motion } from "framer-motion";
 
 const groups = [
     {
-        title: <>Soluciones de <NeonEmphasis>Ventas y Crecimiento</NeonEmphasis></>,
-        subtitle: "Growth & Sales",
-        description: "Automatizaciones diseñadas para captar, calificar y cerrar prospectos sin intervención humana.",
+        title: <>Ventas y <NeonEmphasis>Crecimiento</NeonEmphasis></>,
+        subtitle: "Captación y conversión",
+        description: "Que ningún lead se enfríe esperando. Captación, enriquecimiento y calificación corriendo solos, con el rastro de cada contacto visible en tu portal.",
         tags: ["ventas", "growth", "conversion"],
     },
     {
-        title: <>Cerebro de <NeonEmphasis>Marketing</NeonEmphasis></>,
-        subtitle: "Creative & Marketing",
-        description: "Motores generativos que entienden tu marca y producen contenido a escala.",
+        title: <>Contenido y <NeonEmphasis>Creatividad</NeonEmphasis></>,
+        subtitle: "Producción a escala",
+        description: "Producir más sin sonar a robot. Motores generativos entrenados con tu marca, siempre con un humano aprobando antes de publicar.",
         tags: ["marketing", "creatividad", "estrategia"],
     },
     {
-        title: <>Sistemas <NeonEmphasis>Operativos</NeonEmphasis></>,
-        subtitle: "Ops & Analytics",
-        description: "Elimina silos y unifica el flujo de datos para decisiones instantáneas.",
+        title: <>Operaciones y <NeonEmphasis>Backoffice</NeonEmphasis></>,
+        subtitle: "El frente que nadie automatiza",
+        description: "Reportes, conciliaciones, aprobaciones y seguimiento: el trabajo invisible que se come las horas de tu equipo, convertido en flujos que avisan cuando algo falla.",
         tags: ["operaciones", "analitica", "soporte"],
     }
 ];
@@ -39,15 +39,15 @@ export default function SolucionesPage() {
                     animate={{ opacity: 1 }}
                     className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-4"
                 >
-                    Librería Interactiva
+                    Qué construimos
                 </motion.p>
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-5xl md:text-7xl font-display font-medium text-white mb-6"
                 >
-                    Ecosistemas de <br />
-                    <NeonEmphasis>Automatización</NeonEmphasis>
+                    Estos son los flujos <br />
+                    que <NeonEmphasis>ya operamos</NeonEmphasis>
                 </motion.h1>
                 <motion.p 
                     initial={{ opacity: 0, y: 20 }}
@@ -55,8 +55,8 @@ export default function SolucionesPage() {
                     transition={{ delay: 0.1 }}
                     className="text-xl text-zinc-400 font-light max-w-2xl mx-auto"
                 >
-                    Explora nuestras plantillas inteligentes según la fricción de tu negocio. 
-                    Personalizamos cada flujo para adaptarlo al ADN de tu empresa.
+                    Ninguno se entrega tal cual: son puntos de partida. En el diagnóstico definimos
+                    cuáles aplican a tu operación y qué hay que construir desde cero.
                 </motion.p>
             </div>
 

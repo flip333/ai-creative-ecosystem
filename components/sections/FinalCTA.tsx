@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Lock } from "lucide-react";
 import Link from "next/link";
 import { NeonEmphasis } from "@/components/ui/NeonEmphasis";
 
@@ -19,8 +19,8 @@ export const FinalCTA = () => {
                         viewport={{ once: true }}
                         className="text-6xl md:text-9xl font-display font-medium mb-12 leading-[0.85] tracking-tighter"
                     >
-                        El futuro es <br />
-                        <NeonEmphasis>Sistémico</NeonEmphasis>
+                        Empecemos por <br />
+                        <NeonEmphasis>entender</NeonEmphasis>
                     </motion.h2>
 
                     <motion.p
@@ -30,8 +30,10 @@ export const FinalCTA = () => {
                         transition={{ delay: 0.1 }}
                         className="text-xl md:text-3xl text-zinc-400 mb-16 max-w-2xl mx-auto font-light leading-snug"
                     >
-                        No implementamos herramientas. <br />
-                        <span className="text-white font-medium italic">Construimos el futuro de tu marca.</span>
+                        Media hora contigo y tu operación. <br />
+                        <span className="text-white font-medium italic">
+                            Sales con un diagnóstico escrito, contrates o no.
+                        </span>
                     </motion.p>
 
                     <motion.div
@@ -43,8 +45,16 @@ export const FinalCTA = () => {
                     >
                         <Link href="/diagnostico" className="inline-block btn-premium group text-xl px-12 py-6">
                             <span className="flex items-center gap-3">
-                                Iniciar Transformación <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                                Agendar mi diagnóstico <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
                             </span>
+                        </Link>
+
+                        <Link
+                            href="/login"
+                            className="inline-flex items-center gap-2 text-base text-zinc-500 hover:text-primary transition-colors"
+                        >
+                            <Lock size={16} />
+                            Ya soy cliente, entrar a mi portal
                         </Link>
                     </motion.div>
                 </div>

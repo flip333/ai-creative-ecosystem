@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap, Lock } from "lucide-react";
 import Link from "next/link";
 
 import { DNAHelix } from "@/components/ui/DNAHelix";
@@ -28,7 +28,7 @@ export const Hero = () => {
                     >
                         <Zap size={14} className="text-primary animate-pulse" />
                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/80">
-                            Activa tu ADN Inteligente
+                            Acompañamiento 1:1 · Sistemas a medida
                         </span>
                     </motion.div>
 
@@ -39,9 +39,9 @@ export const Hero = () => {
                             transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
                             className="text-5xl md:text-[7.5rem] font-display font-medium leading-[0.9] mb-12 tracking-tighter text-white"
                         >
-                            Soluciones de IA <br />
-                            que potencian <br />
-                            <NeonEmphasis>RESULTADOS</NeonEmphasis>
+                            Toda tu IA <br />
+                            en un solo lugar. <br />
+                            <NeonEmphasis>Y TRAZABLE</NeonEmphasis>
                         </motion.h1>
                     </div>
 
@@ -49,42 +49,69 @@ export const Hero = () => {
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                        className="text-lg md:text-2xl text-zinc-400 mb-14 max-w-2xl leading-relaxed font-light"
+                        className="text-lg md:text-2xl text-zinc-400 mb-14 max-w-3xl leading-relaxed font-light"
                     >
-                        No acumulamos herramientas. <span className="text-white font-medium">Secuenciamos el ADN de tu marca</span> para orquestar Marketing, Ventas y Creatividad en un solo ecosistema inteligente.
+                        Diseñamos y operamos tus automatizaciones —{" "}
+                        <span className="text-white font-medium">de marketing a operaciones</span> — con un
+                        consultor asignado y un portal donde ves qué está corriendo, qué resultados da y
+                        cuánto cuesta cada pieza.
                     </motion.p>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                        className="flex flex-col sm:flex-row items-center gap-6"
+                        className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
                     >
-                        <Link href="/diagnostico" className="inline-block btn-premium group text-lg px-10 py-4 shadow-[0_0_30px_rgba(204,255,0,0.3)] hover:shadow-[0_0_50px_rgba(204,255,0,0.5)]">
+                        <Link
+                            href="/diagnostico"
+                            className="inline-block btn-premium group text-lg px-10 py-4 shadow-[0_0_30px_rgba(204,255,0,0.3)] hover:shadow-[0_0_50px_rgba(204,255,0,0.5)]"
+                        >
                             <span className="flex items-center gap-3">
-                                Empieza la Secuenciación <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                                Solicitar diagnóstico gratuito{" "}
+                                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                            </span>
+                        </Link>
+
+                        <Link href="/login" className="inline-block btn-secondary group text-lg px-8 py-4">
+                            <span className="flex items-center gap-3">
+                                <Lock size={16} />
+                                Ya soy cliente
                             </span>
                         </Link>
                     </motion.div>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1 }}
+                        className="mt-6 text-xs text-zinc-600 uppercase tracking-widest"
+                    >
+                        30 min · Sin compromiso · Sales con un diagnóstico escrito
+                    </motion.p>
                 </div>
 
-                {/* Performance stats floating with neon accents */}
-                <div className="mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl">
+                {/* Los tres compromisos que sostienen la promesa de arriba */}
+                <div className="mt-28 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl">
                     {[
-                        { label: "Origin OS", val: "Marketing & Ventas" },
-                        { label: "Vivid Synthesis", val: "Sistema de Contenido" },
-                        { label: "Synergy AI", val: "Cultura Inteligente" }
+                        { label: "Costos", val: "Visibles y optimizados" },
+                        { label: "Arquitectura", val: "Segura y escalable" },
+                        { label: "Acompañamiento", val: "1:1, orientado a metas" },
                     ].map((stat, i) => (
                         <motion.div
-                            key={i}
+                            key={stat.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.6 + i * 0.1 }}
                             viewport={{ once: true }}
                             className="border-l border-primary/20 pl-4 group"
                         >
-                            <p className="text-[10px] uppercase tracking-widest text-neon-muted mb-1 font-bold">{stat.label}</p>
-                            <p className="text-xl font-display font-medium text-white group-hover:text-primary transition-colors">{stat.val}</p>
+                            <p className="text-[10px] uppercase tracking-widest text-neon-muted mb-1 font-bold">
+                                {stat.label}
+                            </p>
+                            <p className="text-xl font-display font-medium text-white group-hover:text-primary transition-colors">
+                                {stat.val}
+                            </p>
                         </motion.div>
                     ))}
                 </div>

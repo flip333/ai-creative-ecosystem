@@ -6,20 +6,30 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "AI Creative Ecosystem | Sistemas Inteligentes para Negocios de Próxima Generación",
-  description: "Potenciamos la intuición humana con inteligencia de datos. Ecosistema de IA estratégicamente diseñado para escalar tu creatividad y optimizar tus procesos operativos.",
-  keywords: ["IA para empresas", "automatización inteligente", "creatividad IA", "sistemas expertos", "ecosistema digital", "transformación digital"],
+  metadataBase: new URL("https://genflow.com.co"),
+  title: "Genflow | Automatización e IA con trazabilidad y acompañamiento 1:1",
+  description:
+    "Diseñamos y operamos tus automatizaciones de marketing, ventas y operaciones. Con un consultor asignado y un portal donde ves qué corre, qué resultados da y cuánto cuesta cada pieza.",
+  keywords: [
+    "automatización empresarial",
+    "consultoría IA",
+    "trazabilidad de automatizaciones",
+    "optimización de costos IA",
+    "automatización de operaciones",
+    "IA segura y escalable",
+  ],
   openGraph: {
-    title: "AI Creative Ecosystem",
-    description: "Sistemas Inteligentes que piensan, crean y escalan contigo.",
-    url: "https://ai-creative-ecosystem.com",
-    siteName: "AI Creative Ecosystem",
+    title: "Genflow | Toda tu IA en un solo lugar. Y trazable.",
+    description:
+      "Automatizaciones de marketing a operaciones, con acompañamiento 1:1 y costos visibles. Diagnóstico gratuito de 30 minutos.",
+    url: "https://genflow.com.co",
+    siteName: "Genflow",
     images: [
       {
         url: "/hero_ai_creative_abstract_1769822779877.png",
         width: 1200,
         height: 630,
-        alt: "AI Creative Ecosystem Preview",
+        alt: "Genflow — portal de clientes con trazabilidad de automatizaciones",
       },
     ],
     locale: "es_CO",
@@ -27,8 +37,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Creative Ecosystem",
-    description: "Inteligencia Artificial que potencia la intuición humana.",
+    title: "Genflow | Toda tu IA en un solo lugar. Y trazable.",
+    description:
+      "Automatizaciones de marketing a operaciones, con acompañamiento 1:1 y costos visibles.",
     images: ["/hero_ai_creative_abstract_1769822779877.png"],
   },
 };
