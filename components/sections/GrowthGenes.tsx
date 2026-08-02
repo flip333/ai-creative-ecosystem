@@ -1,12 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Database, Brain, Layers, ArrowRight, MessageSquare, LineChart, Image as ImageIcon, Zap, TrendingUp, Video, Play, Activity } from "lucide-react";
 import { NeonEmphasis } from "@/components/ui/NeonEmphasis";
 import { TypewriterPulse } from "@/components/ui/TypewriterPulse";
+import { DigitalBrainGraph } from "@/components/brain/DigitalBrainGraph";
 
-const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' }) => {
+const InterfaceMockup = ({ type }: { type: 'crm' | 'node' | 'chat' | 'brain' }) => {
+    if (type === 'brain') {
+        return <DigitalBrainGraph />;
+    }
+
     if (type === 'crm') {
         return (
             <div className="w-full h-full bg-[#050505] rounded-xl border border-white/10 relative overflow-hidden font-mono group/mockup">
@@ -361,7 +366,9 @@ const genes = [
         color: "from-primary/20",
         borderColor: "group-hover:border-primary/50",
         features: ["Hub de Datos Unificado", "CRM Autonómo", "Lead Scoring Predictivo"],
-        mockupType: 'crm'
+        mockupType: 'crm',
+        altMockupType: 'brain',
+        altLabel: 'Cerebro Digital'
     },
     {
         id: "vivid",
@@ -388,6 +395,9 @@ const genes = [
 ];
 
 const GeneCard = ({ gene, index }: { gene: any, index: number }) => {
+    const [activeMockup, setActiveMockup] = useState(gene.mockupType);
+    const isShowingAlt = activeMockup === gene.altMockupType;
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -427,10 +437,18 @@ const GeneCard = ({ gene, index }: { gene: any, index: number }) => {
 
             {/* Visual Side */}
             <div className="md:w-1/2 bg-black/20 relative overflow-hidden border-t md:border-t-0 md:border-l border-white/5">
+                {gene.altMockupType && (
+                    <button
+                        onClick={() => setActiveMockup(isShowingAlt ? gene.mockupType : gene.altMockupType)}
+                        className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/80 hover:text-primary hover:border-primary/40 backdrop-blur-md transition-colors cursor-pointer"
+                    >
+                        {isShowingAlt ? 'Ver CRM' : `Ver ${gene.altLabel}`}
+                    </button>
+                )}
                 <div className="absolute inset-0 flex items-center justify-center p-8">
                     <div className="w-full h-full max-h-[300px] shadow-2xl shadow-black rounded-xl overflow-hidden transform group-hover:scale-105 transition-transform duration-700">
                         {/* Mockup Container */}
-                        <InterfaceMockup type={gene.mockupType} />
+                        <InterfaceMockup type={activeMockup} />
                     </div>
                 </div>
 

@@ -7,6 +7,8 @@ import { Diagnosis } from "@/components/sections/Diagnosis";
 import { ScrollAnimatedCopy } from "@/components/sections/ScrollAnimatedCopy";
 import { NeonEmphasis } from "@/components/ui/NeonEmphasis";
 import { motion } from "framer-motion";
+import { DigitalBrainGraph } from "@/components/brain/DigitalBrainGraph";
+import { BrainStatsBar } from "@/components/brain/BrainStatsBar";
 
 const groups = [
     {
@@ -58,6 +60,35 @@ export default function SolucionesPage() {
                     Explora nuestras plantillas inteligentes según la fricción de tu negocio. 
                     Personalizamos cada flujo para adaptarlo al ADN de tu empresa.
                 </motion.p>
+            </div>
+
+            {/* Cerebro Digital de Origin OS */}
+            <div className="container mx-auto px-6 mb-24">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="rounded-[2.5rem] bg-white/[0.02] border border-white/5 p-8 md:p-12"
+                >
+                    <p className="text-primary uppercase tracking-[0.5em] text-xs font-bold mb-4">
+                        Origin OS
+                    </p>
+                    <h2 className="text-3xl md:text-5xl font-display font-medium text-white mb-6 max-w-2xl">
+                        El <NeonEmphasis>Cerebro Digital</NeonEmphasis> que conecta cada flujo
+                    </h2>
+                    <p className="text-lg text-zinc-400 font-light max-w-2xl mb-10 leading-relaxed">
+                        Un grafo de conocimiento vivo: identidad de marca, agentes IA, automatizaciones
+                        y assets sincronizados en un único sistema nervioso gestionado por Origin OS.
+                    </p>
+
+                    <div className="mb-10">
+                        <BrainStatsBar />
+                    </div>
+
+                    <div className="w-full h-[420px] rounded-2xl overflow-hidden">
+                        <DigitalBrainGraph />
+                    </div>
+                </motion.div>
             </div>
 
             {/* Renderizar cada grupo con el componente UseCases en modo Carrusel */}
