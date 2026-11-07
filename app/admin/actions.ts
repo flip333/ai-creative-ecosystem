@@ -150,6 +150,90 @@ export async function assignAutomation(formData: FormData): Promise<Result> {
   return { ok: true, message: `Automatización "${name}" asignada.` };
 }
 
+export async function updateAutomation(formData: FormData): Promise<Result> {
+  const { supabase, error: authError } = await assertAdmin();
+  if (authError) return { error: authError };
+
+  const id = String(formData.get('id') ?? '');
+  if (!id) return { error: 'Flujo no identificado.' };
+
+  const name = String(formData.get('name') ?? '').trim();
+  const stack = String(formData.get('stack') ?? '').trim();
+  const area = String(formData.get('area') ?? 'operaciones');
+  const monthlyCost = Number(formData.get('monthly_cost') ?? 0);
+  const kpiResult = String(formData.get('kpi_result') ?? '').trim();
+
+  if (!name) return { error: 'El nombre del flujo es obligatorio.' };
+  if (!['marketing', 'ventas', 'operaciones', 'soporte'].includes(area)) {
+    return { error: 'Área inválida.' };
+  }
+  if (!Number.isFinite(monthlyCost) || monthlyCost < 0) {
+    return { error: 'El costo mensual debe ser un número positivo.' };
+  }
+
+  const { error } = await supabase
+    .from('automations')
+    .update({
+      name,
+      stack: stack || null,
+      area,
+      monthly_cost: monthlyCost,
+      kpi_result: kpiResult || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/flows');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/portal/flows');
+
+  return { ok: true, message: `Flujo "${name}" actualizado.` };
+}
+
+export async function setAutomationStatus(id: string, status: string): Promise<Result> {
+  const { supabase, error: authError } = await assertAdmin();
+  if (authError) return { error: authError };
+
+  if (!id) return { error: 'Flujo no identificado.' };
+  if (!['activo', 'pausa', 'error'].includes(status)) {
+    return { error: 'Estado inválido.' };
+  }
+
+  const { error } = await supabase
+    .from('automations')
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq('id', id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/flows');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/oficina');
+  revalidatePath('/portal/flows');
+
+  return { ok: true, message: `Flujo marcado como ${status}.` };
+}
+
+export async function deleteAutomation(id: string): Promise<Result> {
+  const { supabase, error: authError } = await assertAdmin();
+  if (authError) return { error: authError };
+
+  if (!id) return { error: 'Flujo no identificado.' };
+
+  const { error } = await supabase.from('automations').delete().eq('id', id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/flows');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/oficina');
+  revalidatePath('/portal/flows');
+
+  return { ok: true, message: 'Flujo eliminado.' };
+}
+
 // ── Tickets ─────────────────────────────────────────────────
 
 export async function setTicketStatus(id: string, status: string): Promise<Result> {
