@@ -1,0 +1,18 @@
+{
+  "agentes": {
+    "Product Owner":   { "estado": "trabajando", "tarea": "Priorizar el backlog", "accion": "ordenando las historias del Sprint 2", "t": 1794070000.0 },
+    "Scrum Master":    { "estado": "libre", "accion": "disponible", "t": 1794070000.0 },
+    "Arquitecto":      { "estado": "trabajando", "tarea": "Contrato de ejecuciones", "accion": "escribiendo el ADR del webhook", "t": 1794070000.0 },
+    "Seguridad":       { "estado": "trabajando", "tarea": "Prueba negativa de RLS", "accion": "revisando el aislamiento multi-tenant", "t": 1794070000.0 },
+    "DevOps":          { "estado": "libre", "accion": "disponible", "t": 1794070000.0 },
+    "AI & Automation": { "estado": "trabajando", "tarea": "Agente de Ventas IA", "accion": "ajustando el prompt maestro", "t": 1794070000.0 },
+    "Backend & APIs":  { "estado": "listo", "accion": "listo", "t": 1794070000.0, "dice": "Sync automations→office_agents aplicado ✅", "dice_t": 1794070000.0 },
+    "Frontend":        { "estado": "trabajando", "tarea": "Oficina pixel del cliente", "accion": "animando los sprites", "t": 1794070000.0 },
+    "UX/UI":           { "estado": "libre", "accion": "disponible", "t": 1794070000.0 },
+    "QA":              { "estado": "trabajando", "tarea": "Suite E2E", "accion": "corriendo las pruebas críticas", "t": 1794070000.0 },
+    "Delivery/CRM":    { "estado": "trabajando", "tarea": "Onboarding de cliente", "accion": "preparando el playbook", "t": 1794070000.0 }
+  },
+  "reunion": null,
+  "corriendo": true,
+  "pid": 1
+}

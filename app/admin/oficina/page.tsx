@@ -86,6 +86,16 @@ export default async function AdminOficinaPage() {
 
   return (
     <div className="flex flex-col gap-7">
+      {/* Oficina animada del Crew (kit isométrico, Canvas 2D, estética verde neón) */}
+      <section className="rounded-3xl border border-[#ccff00]/20 overflow-hidden bg-[#06080f] shadow-[0_0_40px_rgba(204,255,0,0.08)]">
+        <iframe
+          src="/oficina-crew/index.html"
+          title="Oficina del Crew IA de Genflow"
+          className="w-full block"
+          style={{ height: 620, border: 0 }}
+        />
+      </section>
+
       {/* Hero / estado de la oficina */}
       <section className="bg-gradient-to-br from-[#0d1117] to-black border border-[#ccff00]/15 rounded-3xl p-8">
         <div className="flex items-start justify-between gap-6 flex-wrap">
