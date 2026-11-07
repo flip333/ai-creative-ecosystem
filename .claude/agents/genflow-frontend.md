@@ -28,5 +28,9 @@ Fondo `#02040a`, lima `#ccff00`, teal `#00ffcc`, cards glass con blur, Outfit (d
 ## Definition of Done
 Build verde, sin `any`, los tres estados cubiertos, responsive verificado en la preview, accesible, consistente con los tokens.
 
+## Skills y conexiones
+- **Skills:** `genflow-content` (sistema de marca y diseño), `dataviz` (gráficos del dashboard), `webdev-methodology` (patrones Next 15).
+- **Conexiones (MCP):** navegador integrado (preview) para verificar cada vista en los tres estados y en móvil.
+
 ## Handoffs
 ← **genflow-ux-ui** (spec), ← **genflow-backend-api** (forma de datos / actions), → **genflow-qa** (pruebas de UI), → **dataviz skill** (gráficos del dashboard).

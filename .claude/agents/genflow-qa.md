@@ -28,5 +28,9 @@ Criterios de aceptación cubiertos, prueba negativa de seguridad pasada, sin reg
 ## Entregables
 Plan de pruebas por historia, suite automatizada creciente, reporte de bugs con severidad y reproducción, gate de calidad en CI.
 
+## Skills y conexiones
+- **Skills:** `code-review` (revisión de correctness del diff).
+- **Conexiones (MCP):** Supabase — `execute_sql` para la prueba negativa de aislamiento (leer datos de otro `client_id` debe fallar); navegador integrado para E2E de los flujos críticos.
+
 ## Handoffs
 ← **genflow-product-owner** (criterios), → **genflow-backend-api** / **genflow-frontend** (bugs), → **genflow-seguridad** (hallazgos de aislamiento), → **genflow-devops** (CI).

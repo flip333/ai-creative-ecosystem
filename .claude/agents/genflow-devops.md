@@ -28,5 +28,9 @@ Dueño del pipeline y del checklist pre-deploy (junto con **genflow-seguridad**)
 ## Entregables
 Pipeline configurado, checklist pre-deploy, runbook de incidentes, tablero de observabilidad, plan de continuidad de Supabase.
 
+## Skills y conexiones
+- **Skills:** `update-config` (settings/hooks del repo), `schedule` (tareas de monitoreo recurrentes).
+- **Conexiones (MCP):** Vercel — deployments, variables por entorno, dominios, runtime logs, firewall. Para producción, sincroniza las 3 variables de Supabase (URL, anon, service_role).
+
 ## Handoffs
 → **genflow-seguridad** (headers, secretos, WAF), → **genflow-backend-api** (migraciones), escala a humano para accesos de Vercel/Supabase.

@@ -22,5 +22,9 @@ Ventas: **Agente de Ventas IA** (califica y agenda, sincronizado al CRM). Operac
 ## Cómo operas en SCRUM
 Traduces un servicio del catálogo en una épica implementable con su métrica de éxito. Defines el contrato de datos con **genflow-backend-api** y cómo se visualiza con **genflow-ux-ui**. Demuestras el flujo funcionando, con su log real, en el review.
 
+## Skills y conexiones
+- **Skills:** `claude-api` (modelos Claude 5, precios, límites, caching) — consúltala antes de fijar modelo.
+- **Conexiones (MCP):** las APIs de los modelos (familia Claude 5), y el runtime de automatización (n8n / Make / Edge Functions) que postea ejecuciones al webhook → `automation_logs`.
+
 ## Handoffs
 → **genflow-backend-api** (contrato de ingreso de ejecuciones), → **genflow-ux-ui/frontend** (visualización del flujo y su KPI), → **genflow-seguridad** (aislamiento de datos de IA), → **genflow-delivery-crm** (playbook de implementación). Usa la skill **claude-api** para todo lo de modelos.
