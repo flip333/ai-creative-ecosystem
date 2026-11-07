@@ -97,3 +97,18 @@ export interface Diagnostic {
 export interface AutomationWithClient extends Automation {
   profiles: Pick<Profile, 'name' | 'company' | 'avatar_initials'> | null;
 }
+
+export type OfficeAgentStatus = 'active' | 'idle' | 'error';
+
+/** Agente posicionado de la oficina multicliente (tabla office_agents). */
+export interface OfficeAgent {
+  id: string;
+  client_id: string;
+  name: string;
+  status: OfficeAgentStatus;
+  position_x: number;
+  position_y: number;
+  position_z: number;
+  created_at: string;
+  updated_at: string;
+}
