@@ -2,19 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  Home, 
-  Workflow, 
-  BookOpen, 
-  CreditCard, 
-  LifeBuoy, 
-  LogOut 
+import {
+  Home,
+  Workflow,
+  BookOpen,
+  CreditCard,
+  LifeBuoy,
+  Building2,
+  LogOut
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
 const navItems = [
   { href: '/portal/home', icon: Home, label: 'Inicio / Resumen' },
+  { href: '/portal/oficina', icon: Building2, label: 'Mi Oficina IA' },
   { href: '/portal/flows', icon: Workflow, label: 'Mis Automatizaciones' },
   { href: '/portal/docs', icon: BookOpen, label: 'Centro de Documentación' },
   { href: '/portal/billing', icon: CreditCard, label: 'Facturación y Costos' },

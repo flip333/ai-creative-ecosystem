@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { LogoutButton } from '@/components/portal/LogoutButton';
 
 const pageTitles: Record<string, { kicker: string; title: string }> = {
+  '/portal/oficina': { kicker: 'Tu equipo de agentes', title: 'Mi Oficina IA' },
   '/portal/flows': { kicker: 'Hub de Automatizaciones', title: 'Mis Automatizaciones' },
   '/portal/docs': { kicker: 'Documentación y Prompts', title: 'Centro de Documentación' },
   '/portal/billing': { kicker: 'Costos e Infraestructura', title: 'Facturación y Costos' },
