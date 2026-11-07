@@ -10,6 +10,7 @@ import {
   Receipt,
   LifeBuoy,
   Bot,
+  Building2,
   LogOut,
   ShieldCheck,
 } from 'lucide-react';
@@ -19,6 +20,12 @@ import { useRouter } from 'next/navigation';
 type NavItem = { href: string; icon: typeof LayoutDashboard; label: string };
 
 const navGroups: { title: string; items: NavItem[] }[] = [
+  {
+    title: 'Oficina',
+    items: [
+      { href: '/admin/oficina', icon: Building2, label: 'Oficina del Crew' },
+    ],
+  },
   {
     title: 'Operación',
     items: [
