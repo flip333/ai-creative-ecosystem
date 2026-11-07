@@ -4,7 +4,7 @@
 window.OFICINA = {
   titulo: "Oficina del Crew IA",
 
-  estado: { url: "estado.json", cadaMs: 2000 },
+  estado: { url: "/api/crew-estado", cadaMs: 2000 },
 
   planta: { ancho: 26, alto: 20, muro: 118 },
 
