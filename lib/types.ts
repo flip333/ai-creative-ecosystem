@@ -45,6 +45,7 @@ export interface Automation {
   kpi_result: string | null;
   documentation_url: string | null;
   spark_points: string | null;
+  master_prompt: string | null;
   nodes: FlowNode[];
   updated_at: string;
 }

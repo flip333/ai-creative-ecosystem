@@ -104,6 +104,8 @@ CREATE TABLE IF NOT EXISTS public.automations (
 );
 
 ALTER TABLE public.automations ADD COLUMN IF NOT EXISTS nodes JSONB NOT NULL DEFAULT '[]'::jsonb;
+-- Prompt maestro del flujo, visible para el cliente en /portal/docs.
+ALTER TABLE public.automations ADD COLUMN IF NOT EXISTS master_prompt TEXT;
 
 CREATE INDEX IF NOT EXISTS automations_client_id_idx ON public.automations (client_id);
 

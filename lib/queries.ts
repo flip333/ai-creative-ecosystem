@@ -141,7 +141,7 @@ export async function getAllAutomationsWithClient(): Promise<AutomationWithClien
   const { data } = await supabase
     .from('automations')
     .select(
-      'id, client_id, name, stack, area, status, monthly_cost, kpi_result, updated_at, profiles(name, company, avatar_initials)',
+      'id, client_id, name, stack, area, status, monthly_cost, kpi_result, master_prompt, updated_at, profiles(name, company, avatar_initials)',
     )
     .order('updated_at', { ascending: false });
 

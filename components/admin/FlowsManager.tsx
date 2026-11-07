@@ -230,6 +230,11 @@ export function FlowsManager({ flows }: { flows: AutomationWithClient[] }) {
                   <input id="e-kpi" name="kpi_result" defaultValue={editing.kpi_result ?? ''} placeholder="+45 Leads" className={inputClass} />
                 </div>
               </div>
+              <div>
+                <label className={labelClass} htmlFor="e-prompt">Prompt maestro (lo ve el cliente en Docs)</label>
+                <textarea id="e-prompt" name="master_prompt" rows={4} defaultValue={editing.master_prompt ?? ''}
+                  placeholder="Eres un asistente experto en..." className={`${inputClass} resize-y`} />
+              </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setEditing(null)}
                   className="px-5 py-2.5 rounded-full text-xs text-zinc-400 hover:text-white bg-transparent border border-white/10 cursor-pointer">

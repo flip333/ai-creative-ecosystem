@@ -121,6 +121,7 @@ export async function assignAutomation(formData: FormData): Promise<Result> {
   const monthlyCost = Number(formData.get('monthly_cost') ?? 0);
   const kpiResult = String(formData.get('kpi_result') ?? '').trim();
   const docUrl = String(formData.get('documentation_url') ?? '').trim();
+  const masterPrompt = String(formData.get('master_prompt') ?? '').trim();
 
   if (!clientId || !name) return { error: 'Cliente y nombre del flujo son obligatorios.' };
   if (!['marketing', 'ventas', 'operaciones', 'soporte'].includes(area)) {
@@ -139,6 +140,7 @@ export async function assignAutomation(formData: FormData): Promise<Result> {
     monthly_cost: monthlyCost,
     kpi_result: kpiResult || null,
     documentation_url: docUrl || null,
+    master_prompt: masterPrompt || null,
   });
 
   if (error) return { error: error.message };
@@ -162,6 +164,7 @@ export async function updateAutomation(formData: FormData): Promise<Result> {
   const area = String(formData.get('area') ?? 'operaciones');
   const monthlyCost = Number(formData.get('monthly_cost') ?? 0);
   const kpiResult = String(formData.get('kpi_result') ?? '').trim();
+  const masterPrompt = String(formData.get('master_prompt') ?? '').trim();
 
   if (!name) return { error: 'El nombre del flujo es obligatorio.' };
   if (!['marketing', 'ventas', 'operaciones', 'soporte'].includes(area)) {
@@ -179,6 +182,7 @@ export async function updateAutomation(formData: FormData): Promise<Result> {
       area,
       monthly_cost: monthlyCost,
       kpi_result: kpiResult || null,
+      master_prompt: masterPrompt || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id);
