@@ -5,9 +5,13 @@ import { usePathname } from 'next/navigation';
 import { LogoutButton } from '@/components/portal/LogoutButton';
 
 const pageTitles: Record<string, { kicker: string; title: string }> = {
-  '/admin/dashboard': { kicker: 'Panel General', title: 'Métricas de la Plataforma' },
+  '/admin/dashboard': { kicker: 'Panel General', title: 'Centro de Mando' },
   '/admin/clients': { kicker: 'Gestión CRM', title: 'Directorio de Clientes' },
+  '/admin/leads': { kicker: 'Pipeline', title: 'Leads del Diagnóstico' },
+  '/admin/flows': { kicker: 'Automatización', title: 'Flujos del Ecosistema' },
+  '/admin/billing': { kicker: 'Finanzas', title: 'Facturación Consolidada' },
   '/admin/tickets': { kicker: 'Atención al Cliente', title: 'Bandeja de Tickets' },
+  '/admin/equipo': { kicker: 'Cultura IA', title: 'Equipo & Crew IA' },
 };
 
 export function AdminHeader({ name }: { name: string }) {

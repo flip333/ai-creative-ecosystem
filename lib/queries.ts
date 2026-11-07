@@ -2,8 +2,10 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import type {
   Automation,
+  AutomationWithClient,
   AutomationWithLogs,
   BillingRecord,
+  Diagnostic,
   Profile,
   SupportTicket,
   TicketWithClient,
@@ -130,4 +132,33 @@ export async function getAllBillingRecords(): Promise<BillingRecord[]> {
     .select('id, client_id, service_name, service_type, monthly_cost, billing_month');
 
   return (data ?? []) as BillingRecord[];
+}
+
+/** Flujos de todo el ecosistema con el cliente dueño, para la Oficina Virtual. */
+export async function getAllAutomationsWithClient(): Promise<AutomationWithClient[]> {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from('automations')
+    .select(
+      'id, client_id, name, stack, area, status, monthly_cost, kpi_result, updated_at, profiles(name, company, avatar_initials)',
+    )
+    .order('updated_at', { ascending: false });
+
+  return (data ?? []).map((row) => ({
+    ...row,
+    nodes: [],
+  })) as unknown as AutomationWithClient[];
+}
+
+/** Leads de la landing (tabla `diagnostics`). Solo visibles para admin vía RLS. */
+export async function getDiagnostics(): Promise<Diagnostic[]> {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from('diagnostics')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  return (data ?? []) as Diagnostic[];
 }

@@ -3,6 +3,7 @@ export type ClientStatus = 'activo' | 'onboarding' | 'pausado';
 export type FlowStatus = 'activo' | 'pausa' | 'error';
 export type TicketStatus = 'abierto' | 'progreso' | 'resuelto';
 export type TicketPriority = 'Baja' | 'Media' | 'Alta';
+export type DiagnosticStatus = 'nuevo' | 'contactado' | 'agendado' | 'descartado';
 
 export interface Profile {
   id: string;
@@ -77,4 +78,21 @@ export interface SupportTicket {
 /** Ticket con el perfil del cliente adjunto, para la bandeja de admin. */
 export interface TicketWithClient extends SupportTicket {
   profiles: Pick<Profile, 'name' | 'company' | 'email' | 'avatar_initials'> | null;
+}
+
+/** Lead de la landing (/diagnostico). Vive en la tabla `diagnostics`. */
+export interface Diagnostic {
+  id: string;
+  name: string;
+  email: string;
+  company: string | null;
+  role: string | null;
+  challenge: string | null;
+  status: DiagnosticStatus;
+  created_at: string;
+}
+
+/** Automatización con el cliente dueño adjunto, para la vista global de flujos. */
+export interface AutomationWithClient extends Automation {
+  profiles: Pick<Profile, 'name' | 'company' | 'avatar_initials'> | null;
 }
