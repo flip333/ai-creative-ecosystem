@@ -4,21 +4,25 @@ import { useEffect, useRef, useState } from 'react';
 import { Wifi, WifiOff, Loader2, Cpu, X } from 'lucide-react';
 import { useSupabaseAgents } from '@/hooks/useSupabaseAgents';
 import type { OfficeAgent, OfficeAgentStatus } from '@/lib/types';
+import {
+  PX, WALL_H, STATUS_COLOR, agentLook, hexA, activityText,
+  drawRoom, drawPlant, drawCoffee, drawLounge, drawStation, drawBubble,
+} from './officePixelSprites';
 
 // ============================================================
-// Oficina 2D (canvas 2D puro, SIN WebGL) — compatible con cualquier equipo.
+// Oficina 2D pixel-art (canvas 2D puro, SIN WebGL) — compatible con cualquier equipo.
 // Consume office_agents en tiempo real vía useSupabaseAgents y coloca cada
-// agente usando position_x / position_z. Color institucional por estado.
+// agente usando position_x / position_z. Sprites propios en officePixelSprites.ts.
 // ============================================================
 
-const STATUS_HEX: Record<OfficeAgentStatus, string> = {
-  active: '#ccff00', idle: '#00ffcc', error: '#ff5964',
-};
+const STATUS_HEX: Record<OfficeAgentStatus, string> = STATUS_COLOR;
 const STATUS_LABEL: Record<OfficeAgentStatus, string> = {
   active: 'Trabajando', idle: 'En espera', error: 'En error',
 };
+const MIN_H = 480;
 
 type Box = { id: string; x: number; y: number; w: number; h: number };
+type WalkState = { mode: 'seat' | 'out' | 'away' | 'back'; dx: number; dir: 1 | -1; until: number };
 
 export function ClientOffice2D() {
   const { agents, connection } = useSupabaseAgents();
@@ -46,8 +50,11 @@ export function ClientOffice2D() {
         ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
 
     let raf = 0;
+    let timer = 0;
     let width = 0;
-    const height = 480;
+    let height = MIN_H;
+    let lastT = 0;
+    const walks = new Map<string, WalkState>();
 
     // Proyecta position_x / position_z a pantalla. Si todas las posiciones
     // coinciden (p.ej. todo en 0), reparte en grilla para que no se solapen.
@@ -61,111 +68,131 @@ export function ClientOffice2D() {
         if (flat) {
           const cols = Math.max(1, Math.min(4, Math.floor(width / 240)));
           const cellW = width / cols;
-          return { x: (i % cols) * cellW + cellW / 2, y: 150 + Math.floor(i / cols) * 150 };
+          return { x: (i % cols) * cellW + cellW / 2, y: 160 + Math.floor(i / cols) * 160 };
         }
-        return { x: cx + a.position_x * 62, y: 180 + a.position_z * 46 };
+        return { x: cx + a.position_x * 62, y: Math.max(160, 180 + a.position_z * 46) };
       });
     };
 
-    const resize = () => {
-      width = wrap.clientWidth || 980;
+    const applySize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-
-    const rect = (x: number, y: number, w: number, h: number, c: string) => {
-      ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), Math.ceil(w), Math.ceil(h));
+    const resize = () => {
+      width = wrap.clientWidth || 980;
+      applySize();
     };
 
-    const drawFloor = () => {
-      ctx.fillStyle = '#06080f';
-      ctx.fillRect(0, 0, width, height);
-      ctx.strokeStyle = 'rgba(204,255,0,0.05)';
-      ctx.lineWidth = 1;
-      for (let x = 0; x <= width; x += 44) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
-      for (let y = 0; y <= height; y += 44) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
-    };
-
-    const drawAgent = (a: OfficeAgent, sx: number, sy: number, t: number) => {
-      const sc = STATUS_HEX[a.status] ?? STATUS_HEX.idle;
-      const hover = hoverRef.current === a.id || selectedRef.current === a.id;
-      const P = 5;
-      const bob = a.status === 'active' && !reduce ? Math.sin(t / 200 + sx) * 2 : 0;
-      const deskY = sy + 24;
-
-      // glow de estado (radial, 2D — no necesita WebGL)
-      const g = ctx.createRadialGradient(sx + 22, deskY - 18, 2, sx + 22, deskY - 18, 60);
-      const alpha = a.status === 'error' ? (Math.floor(t / 300) % 2 ? 0.5 : 0.15) : a.status === 'active' ? 0.4 : 0.2;
-      g.addColorStop(0, hexA(sc, alpha));
-      g.addColorStop(1, 'transparent');
-      ctx.fillStyle = g; ctx.fillRect(sx - 40, deskY - 70, 130, 110);
-
-      // sombra + aro de estado
-      ctx.fillStyle = 'rgba(0,0,0,0.3)';
-      ctx.beginPath(); ctx.ellipse(sx, deskY + 34, 60, 8, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = hexA(sc, hover ? 0.95 : 0.5); ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.ellipse(sx, deskY + 34, 40, 10, 0, 0, Math.PI * 2); ctx.stroke();
-
-      // personaje (pixel)
-      const topY = sy - 34 + bob;
-      rect(sx - 5 * P, topY + 7 * P, 10 * P, 6 * P, areaShirt(a.name));
-      rect(sx - 2 * P, topY + 6 * P, 4 * P, 1.4 * P, '#e8b48c');
-      rect(sx - 4 * P, topY + 1 * P, 8 * P, 6 * P, '#f1c9a5');
-      rect(sx - 4 * P, topY, 8 * P, 2 * P, '#2a2f3a');
-      rect(sx - 1 * P, topY + 8.5 * P, 2 * P, 2 * P, sc);
-      if (a.status === 'idle') {
-        rect(sx - 2.6 * P, topY + 3.6 * P, 1.4 * P, 0.6 * P, '#3a2f2f');
-        rect(sx + 1.2 * P, topY + 3.6 * P, 1.4 * P, 0.6 * P, '#3a2f2f');
-      } else {
-        rect(sx - 2.4 * P, topY + 3.2 * P, 1.2 * P, 1.2 * P, '#1b1f2a');
-        rect(sx + 1.2 * P, topY + 3.2 * P, 1.2 * P, 1.2 * P, '#1b1f2a');
+    // FSM simple: los agentes 'active' se levantan, caminan al costado y vuelven.
+    const updateWalk = (a: OfficeAgent, sx: number, t: number, dt: number): WalkState => {
+      let w = walks.get(a.id);
+      if (!w) { w = { mode: 'seat', dx: 0, dir: 1, until: t + 4000 + Math.random() * 8000 }; walks.set(a.id, w); }
+      if (reduce || a.status !== 'active') {
+        w.mode = 'seat'; w.dx = 0; w.until = t + 4000 + Math.random() * 8000;
+        return w;
       }
-
-      // escritorio + monitor
-      rect(sx - 46, deskY + 20, 92, 7, '#141a24');
-      rect(sx - 46, deskY + 27, 92, 14, '#0b0e14');
-      rect(sx + 14, deskY - 18, 11 * P, 8 * P, '#05070c');
-      const scr = a.status === 'error' && Math.floor(t / 300) % 2 ? 'rgba(255,89,100,0.3)' : hexA(sc, 0.18);
-      rect(sx + 14 + P, deskY - 18 + P, 9 * P, 6 * P, scr);
-      ctx.fillStyle = hexA(sc, 0.85);
-      for (let i = 0; i < 4; i++) {
-        const lw = a.status === 'active' ? (2 + ((Math.floor(t / 180) + i) % 5)) * P : (2 + i) * P;
-        ctx.fillRect(sx + 14 + 1.6 * P, deskY - 18 + (1.6 + i * 1.3) * P, Math.min(lw, 8 * P), 0.7 * P);
+      const speed = 46; // px/s
+      if (w.mode === 'seat' && t >= w.until) {
+        w.dir = sx + 90 > width ? -1 : sx - 90 < 0 ? 1 : Math.random() < 0.5 ? -1 : 1;
+        w.mode = 'out';
+      } else if (w.mode === 'out') {
+        w.dx += w.dir * speed * dt;
+        if (Math.abs(w.dx) >= 80) { w.dx = w.dir * 80; w.mode = 'away'; w.until = t + 2500; }
+      } else if (w.mode === 'away' && t >= w.until) {
+        w.mode = 'back';
+      } else if (w.mode === 'back') {
+        w.dx -= w.dir * speed * dt;
+        if (w.dx * w.dir <= 0) { w.dx = 0; w.mode = 'seat'; w.until = t + 6000 + Math.random() * 9000; }
       }
-
-      // nombre + estado
-      ctx.fillStyle = hover ? '#ffffff' : '#c9d1d9';
-      ctx.font = '600 13px Inter, sans-serif'; ctx.textAlign = 'center';
-      const nm = a.name.length > 22 ? a.name.slice(0, 20) + '…' : a.name;
-      ctx.fillText(nm, sx, deskY + 58);
-      ctx.fillStyle = hexA(sc, 0.9); ctx.font = '600 9px monospace';
-      ctx.fillText((STATUS_LABEL[a.status] ?? a.status).toUpperCase(), sx, deskY + 72);
-      ctx.textAlign = 'left';
+      return w;
     };
 
-    const frame = (t: number) => {
+    const draw = (t: number): boolean => {
       try {
-        drawFloor();
+        const dt = Math.min(0.1, Math.max(0, (t - lastT) / 1000));
+        lastT = t;
         const list = agentsRef.current;
         const pos = screenPos(list);
+
+        // Alto dinámico: filas de agentes + franja de lounge
+        const maxY = pos.reduce((m, p) => Math.max(m, p.y), 0);
+        const needH = Math.max(MIN_H, maxY + 130 + 120);
+        if (needH !== height) { height = needH; applySize(); }
+
+        drawRoom(ctx, width, height, t, reduce);
+        // Mobiliario
+        drawPlant(ctx, 36, WALL_H - 8, t, reduce);
+        drawPlant(ctx, width - 36, WALL_H - 8, t, reduce);
+        drawCoffee(ctx, width - 110, WALL_H - 34, t, reduce);
+        const loungeW = Math.min(300, width - 120);
+        if (loungeW > 150) drawLounge(ctx, 20, height - 108, loungeW, 92);
+        drawPlant(ctx, width - 40, height - 40, t, reduce);
+
         const order = list.map((a, i) => ({ a, p: pos[i] })).sort((u, v) => u.p.y - v.p.y);
         const boxes: Box[] = [];
         for (const { a, p } of order) {
-          drawAgent(a, p.x, p.y, t);
-          boxes.push({ id: a.id, x: p.x - 46, y: p.y - 54, w: 92, h: 150 });
+          const look = agentLook(a.name);
+          const hover = hoverRef.current === a.id || selectedRef.current === a.id;
+          const w = updateWalk(a, p.x, t, dt);
+          const walking = w.mode !== 'seat';
+          drawStation(ctx, {
+            sx: p.x, sy: p.y, status: a.status, look, t, reduce, hover,
+            walk: walking ? { dx: w.dx, moving: w.mode === 'out' || w.mode === 'back' } : null,
+          });
+
+          // Burbuja: zzz / ! siempre; actividad al pasar el mouse o seleccionar
+          const bx = p.x, by = p.y - 6 * PX;
+          if (a.status === 'error') {
+            if (reduce || Math.floor(t / 400) % 2 === 0) {
+              drawBubble(ctx, bx, by, '!', '#ff5964', { font: '800 14px Outfit, Inter, sans-serif' });
+            }
+          } else if (a.status === 'idle') {
+            const f = reduce ? 2 : Math.floor(t / 500) % 3;
+            drawBubble(ctx, bx, by - (reduce ? 0 : f * 2), 'z'.repeat(f + 1), '#00ffcc', { font: '700 12px monospace' });
+          } else if (hover) {
+            drawBubble(ctx, bx, by, activityText(a.name, t), '#ccff00');
+          }
+
+          // Nombre + estado
+          const sc = STATUS_HEX[a.status] ?? STATUS_HEX.idle;
+          ctx.textAlign = 'center';
+          ctx.fillStyle = hover ? '#ffffff' : '#c9d1d9';
+          ctx.font = '600 13px Inter, sans-serif';
+          const nm = a.name.length > 22 ? a.name.slice(0, 20) + '…' : a.name;
+          ctx.fillText(nm, p.x, p.y + 21 * PX + 18);
+          ctx.fillStyle = hexA(sc, 0.9);
+          ctx.font = '600 9px monospace';
+          ctx.fillText((STATUS_LABEL[a.status] ?? a.status).toUpperCase(), p.x, p.y + 21 * PX + 32);
+          ctx.textAlign = 'left';
+
+          boxes.push({ id: a.id, x: p.x - 62, y: p.y - 30, w: 124, h: 21 * PX + 62 });
         }
         boxesRef.current = boxes;
-      } catch (e) { console.error('Oficina 2D error:', e); cancelAnimationFrame(raf); return; }
-      if (!reduce) raf = requestAnimationFrame(frame);
+        return true;
+      } catch (e) {
+        console.error('Oficina 2D error:', e);
+        return false;
+      }
+    };
+
+    const frame = (t: number) => {
+      if (!draw(t)) return;
+      raf = requestAnimationFrame(frame);
     };
 
     resize();
-    frame(0);
-    const ro = new ResizeObserver(() => { resize(); if (reduce) frame(performance.now()); });
+    if (reduce) {
+      // Sin animación: redibuja de forma espaciada para reflejar cambios en vivo.
+      draw(0);
+      timer = window.setInterval(() => { if (!draw(0)) window.clearInterval(timer); }, 1000);
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
+    const ro = new ResizeObserver(() => { resize(); if (reduce) draw(0); });
     ro.observe(wrap);
 
     const pick = (e: MouseEvent): string | null => {
@@ -177,13 +204,19 @@ export function ClientOffice2D() {
       }
       return null;
     };
-    const onMove = (e: MouseEvent) => { const id = pick(e); hoverRef.current = id; canvas.style.cursor = id ? 'pointer' : 'default'; };
-    const onClick = (e: MouseEvent) => { const id = pick(e); selectedRef.current = id; setSelectedId(id); };
+    const onMove = (e: MouseEvent) => {
+      const id = pick(e); hoverRef.current = id; canvas.style.cursor = id ? 'pointer' : 'default';
+      if (reduce) draw(0);
+    };
+    const onClick = (e: MouseEvent) => {
+      const id = pick(e); selectedRef.current = id; setSelectedId(id);
+      if (reduce) draw(0);
+    };
     canvas.addEventListener('mousemove', onMove);
     canvas.addEventListener('click', onClick);
 
     return () => {
-      cancelAnimationFrame(raf); ro.disconnect();
+      cancelAnimationFrame(raf); window.clearInterval(timer); ro.disconnect();
       canvas.removeEventListener('mousemove', onMove);
       canvas.removeEventListener('click', onClick);
     };
@@ -203,11 +236,16 @@ export function ClientOffice2D() {
         <ConnBadge connection={connection} count={agents.length} />
       </section>
 
-      <div ref={wrapRef} className="relative w-full overflow-hidden rounded-3xl border border-[#ccff00]/15 bg-[#06080f]">
-        <canvas ref={canvasRef} className="block w-full" />
+      <div ref={wrapRef} className="relative w-full overflow-hidden rounded-3xl border border-[#ccff00]/15 bg-[#02040a]">
+        <canvas
+          ref={canvasRef}
+          className="block w-full"
+          role="img"
+          aria-label="Oficina pixel-art con tus agentes de IA en tiempo real"
+        />
         {connection === 'connected' && agents.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="text-zinc-400 text-sm max-w-xs text-center px-6">
+            <p className="text-zinc-300 text-sm max-w-xs text-center px-6 py-4 rounded-2xl bg-[#02040a]/80 border border-white/10">
               Tu oficina está lista pero aún no tiene agentes. Cuando se creen en{' '}
               <span className="font-mono text-[#00ffcc]">office_agents</span>, aparecerán aquí en vivo.
             </p>
@@ -220,6 +258,14 @@ export function ClientOffice2D() {
         )}
       </div>
 
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-1 font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
+        {(Object.keys(STATUS_LABEL) as OfficeAgentStatus[]).map((s) => (
+          <span key={s} className="inline-flex items-center gap-2">
+            <span className="w-2 h-2 rounded-sm" style={{ background: STATUS_HEX[s] }} /> {STATUS_LABEL[s]}
+          </span>
+        ))}
+      </div>
+
       {selected && (
         <div className="fixed top-0 right-0 bottom-0 w-[360px] max-w-[92vw] bg-[#0d1117] border-l border-[#ccff00]/20 shadow-2xl z-50 flex flex-col">
           <div className="p-6 border-b border-white/5 flex items-start justify-between">
@@ -227,7 +273,11 @@ export function ClientOffice2D() {
               <span className="font-mono text-[10px] tracking-widest uppercase text-[#ccff00]">Agente</span>
               <h2 className="font-display text-lg font-medium text-white tracking-tight truncate">{selected.name}</h2>
             </div>
-            <button onClick={() => setSelectedId(null)} className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center cursor-pointer shrink-0">
+            <button
+              onClick={() => setSelectedId(null)}
+              aria-label="Cerrar panel"
+              className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center cursor-pointer shrink-0"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -267,14 +317,4 @@ function ConnBadge({ connection, count }: { connection: 'loading' | 'connected' 
       <Loader2 className="w-3.5 h-3.5 animate-spin" /> Conectando…
     </div>
   );
-}
-
-function areaShirt(seed: string): string {
-  const palette = ['#1ea7a0', '#9fbe1f', '#4f79c9', '#8a63c9', '#c9794f'];
-  let h = 0; for (let i = 0; i < seed.length; i++) h = (h + seed.charCodeAt(i)) % palette.length;
-  return palette[h];
-}
-function hexA(hex: string, a: number): string {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
 }

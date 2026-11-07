@@ -104,6 +104,8 @@ export type OfficeAgentStatus = 'active' | 'idle' | 'error';
 export interface OfficeAgent {
   id: string;
   client_id: string;
+  /** Automatización real vinculada (1:1); null en agentes sembrados a mano. */
+  automation_id?: string | null;
   name: string;
   status: OfficeAgentStatus;
   position_x: number;
