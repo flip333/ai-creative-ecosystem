@@ -114,3 +114,10 @@ export interface OfficeAgent {
   created_at: string;
   updated_at: string;
 }
+
+/** Ejecuciones de un día (suma de todos los flujos del cliente). `day` es YYYY-MM-DD. */
+export interface ExecutionTrendPoint {
+  day: string;
+  success: number;
+  error: number;
+}

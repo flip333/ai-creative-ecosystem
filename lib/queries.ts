@@ -6,6 +6,7 @@ import type {
   AutomationWithLogs,
   BillingRecord,
   Diagnostic,
+  ExecutionTrendPoint,
   Profile,
   SupportTicket,
   TicketWithClient,
@@ -63,6 +64,48 @@ export async function getAutomations(clientId: string): Promise<AutomationWithLo
         b.created_at.localeCompare(a.created_at))
       .slice(0, 5),
   })) as AutomationWithLogs[];
+}
+
+/**
+ * Ejecuciones por día de los flujos del cliente (automation_logs), últimos
+ * `days` días incluyendo hoy. Siempre devuelve `days` puntos (con ceros).
+ */
+export async function getExecutionTrend(
+  clientId: string,
+  days = 14,
+): Promise<ExecutionTrendPoint[]> {
+  const supabase = await createClient();
+
+  const keyOf = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  start.setDate(start.getDate() - (days - 1));
+
+  const buckets = new Map<string, ExecutionTrendPoint>();
+  for (let i = 0; i < days; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    const day = keyOf(d);
+    buckets.set(day, { day, success: 0, error: 0 });
+  }
+
+  const { data } = await supabase
+    .from('automation_logs')
+    .select('status, created_at, automations!inner(client_id)')
+    .eq('automations.client_id', clientId)
+    .gte('created_at', start.toISOString())
+    .limit(5000);
+
+  for (const row of (data ?? []) as { status: string; created_at: string }[]) {
+    const bucket = buckets.get(keyOf(new Date(row.created_at)));
+    if (!bucket) continue;
+    if (row.status === 'error') bucket.error += 1;
+    else bucket.success += 1;
+  }
+
+  return Array.from(buckets.values());
 }
 
 export async function getBillingRecords(clientId: string): Promise<BillingRecord[]> {
