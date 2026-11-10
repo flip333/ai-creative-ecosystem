@@ -306,6 +306,11 @@ CREATE POLICY "diagnostics_insert_public" ON public.diagnostics
 CREATE POLICY "diagnostics_admin_all" ON public.diagnostics
   FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
 
+-- Grant explícito: sin él, un re-apply sobre un proyecto donde los defaults
+-- de `anon` fueron alterados deja el formulario de /diagnostico bloqueado
+-- con "42501 row-level security policy" aunque la política exista.
+GRANT INSERT ON public.diagnostics TO anon, authenticated;
+
 
 -- ============================================================
 -- POST-SETUP
